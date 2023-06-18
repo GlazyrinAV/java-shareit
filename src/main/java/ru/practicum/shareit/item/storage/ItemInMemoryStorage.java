@@ -3,7 +3,6 @@ package ru.practicum.shareit.item.storage;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.exceptions.exceptions.ValidationException;
 import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
 import ru.practicum.shareit.item.model.Item;
 
