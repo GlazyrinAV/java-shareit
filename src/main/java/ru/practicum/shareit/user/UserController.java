@@ -15,27 +15,27 @@ public class UserController {
 
     @PostMapping
     public User saveNew(@Valid @RequestBody User user) {
-
+        return userService.saveNew(user);
     }
 
     @GetMapping
     public Collection<User> findAll() {
-
+        return userService.findAll();
     }
 
     @GetMapping("/{id}")
     public User findById(@PathVariable int id) {
-
+        return userService.findById(id);
     }
 
     @DeleteMapping("/{id}")
     public void removeById(@PathVariable int id) {
-
+        userService.removeById(id);
     }
 
     @PatchMapping("/{id}")
     public User updateById(@PathVariable int id, @RequestBody User user) {
-
+        return userService.updateById(id, user);
     }
 
 }

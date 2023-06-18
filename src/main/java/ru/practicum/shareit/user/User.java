@@ -10,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class User {
 
+    private int id;
+
     private String name;
 
     @Email(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$",

@@ -15,28 +15,40 @@ public class UserInMemoryStorage implements UserStorage {
 
     private final HashMap<Integer, User> users = new HashMap<>();
 
+    private int id = 0;
+
     @Override
     public User saveNew(User user) {
-        return null;
+        user.setId(id++);
+        users.put(user.getId(), user);
+        return user;
     }
 
     @Override
     public Collection<User> findAll() {
-        return null;
+        return users.values();
     }
 
     @Override
     public User findById(int id) {
-        return null;
+        return users.get(id);
     }
 
     @Override
     public void removeById(int id) {
-
+        users.remove(id);
     }
 
     @Override
     public User updateById(int id, User user) {
-        return null;
+        User oldUser = users.get(id);
+        if (user.getName() != null) {
+            oldUser.setName(user.getName());
+        }
+        if (user.getEmail() != null) {
+            oldUser.setEmail(user.getEmail());
+        }
+        users.replace(id, oldUser);
+        return oldUser;
     }
 }
