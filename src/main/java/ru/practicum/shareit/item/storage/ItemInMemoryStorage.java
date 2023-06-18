@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.storage;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.practicum.shareit.exceptions.exceptions.ValidationException;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.ArrayList;
@@ -16,10 +17,13 @@ public class ItemInMemoryStorage implements ItemStorage {
 
     private final HashMap<Integer, Item> items = new HashMap<>();
 
-    private int itemId = 0;
+    private static int itemId = 1;
 
     @Override
     public Item saveNew(Item item) {
+        if (item.getName() == null || item.getDescription() == null || item.getAvailable() == null) {
+            throw  new ValidationException("Неправильно указаны параметры нового предмета.");
+        }
         item.setId(itemId++);
         items.put(item.getId(), item);
         return item;
