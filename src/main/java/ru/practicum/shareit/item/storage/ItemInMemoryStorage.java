@@ -3,7 +3,6 @@ package ru.practicum.shareit.item.storage;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.Collection;
@@ -17,22 +16,22 @@ public class ItemInMemoryStorage implements ItemStorage {
     private final HashMap<Integer, Item> items = new HashMap<>();
 
     @Override
-    public ItemDto saveNew(int userId, ItemDto itemDto) {
+    public Item saveNew(int ownerId, Item item) {
         return null;
     }
 
     @Override
-    public Collection<ItemDto> findAllByUserID() {
+    public Collection<Item> findAllByUserID(int ownerId) {
         return null;
     }
 
     @Override
-    public ItemDto findById(int id) {
+    public Item findById(int id) {
         return null;
     }
 
     @Override
-    public Collection<ItemDto> findByName(String text) {
+    public Collection<Item> findByName(String text) {
         return null;
     }
 
@@ -42,7 +41,8 @@ public class ItemInMemoryStorage implements ItemStorage {
     }
 
     @Override
-    public ItemDto updateById(int userId, ItemDto itemDto) {
+    public Item updateById(int ownerId, Item itemDto) {
         return null;
     }
+
 }

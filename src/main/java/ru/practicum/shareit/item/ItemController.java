@@ -16,12 +16,12 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ItemDto saveNew(@RequestHeader("X-Sharer-User-Id") int userId, @Valid @RequestBody ItemDto itemDto) {
+    public ItemDto saveNew(@RequestHeader("X-Sharer-User-Id") int ownerId, @Valid @RequestBody ItemDto itemDto) {
 
     }
 
     @GetMapping
-    public Collection<ItemDto> findAllByUserID() {
+    public Collection<ItemDto> findAllByUserID(@RequestHeader("X-Sharer-User-Id") int ownerId) {
 
     }
 
@@ -41,7 +41,7 @@ public class ItemController {
     }
 
     @PatchMapping
-    public ItemDto updateById(@RequestHeader("X-Sharer-User-Id") int userId, @Valid @RequestBody ItemDto itemDto) {
+    public ItemDto updateById(@RequestHeader("X-Sharer-User-Id") int ownerId, @Valid @RequestBody ItemDto itemDto) {
 
     }
 

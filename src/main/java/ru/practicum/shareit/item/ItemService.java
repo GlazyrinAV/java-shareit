@@ -15,11 +15,11 @@ public class ItemService {
 
     private final ItemStorage itemStorage;
 
-    public ItemDto saveNew(int userId, ItemDto itemDto) {
+    public ItemDto saveNew(int ownerID, ItemDto itemDto) {
 
     }
 
-    public Collection<ItemDto> findAllByUserID() {
+    public Collection<ItemDto> findAllByUserID(int ownerId) {
 
     }
 
@@ -35,7 +35,7 @@ public class ItemService {
 
     }
 
-    public ItemDto updateById(int userId, ItemDto itemDto) {
+    public ItemDto updateById(int ownerID, ItemDto itemDto) {
 
     }
 
