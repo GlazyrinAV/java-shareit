@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exceptions.exceptions.ValidationException;
+import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.ArrayList;
@@ -21,8 +22,11 @@ public class ItemInMemoryStorage implements ItemStorage {
 
     @Override
     public Item saveNew(Item item) {
-        if (item.getName() == null || item.getDescription() == null || item.getAvailable() == null) {
-            throw  new ValidationException("Неправильно указаны параметры нового предмета.");
+        if (item.getName() == null || item.getName().isBlank() || item.getDescription() == null || item.getDescription().isBlank()) {
+            throw  new WrongParameter("Неправильно указаны параметры нового предмета.");
+        }
+        if (item.getAvailable() == null) {
+            throw new WrongParameter("не указаны данные о доступности.");
         }
         item.setId(itemId++);
         items.put(item.getId(), item);

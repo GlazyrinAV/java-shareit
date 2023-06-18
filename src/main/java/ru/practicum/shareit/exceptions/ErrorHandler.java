@@ -6,8 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.exceptions.exceptions.UserAlreadyExists;
-import ru.practicum.shareit.exceptions.exceptions.ValidationException;
+import ru.practicum.shareit.exceptions.exceptions.*;
 
 @RestControllerAdvice
 @Slf4j
@@ -19,9 +18,21 @@ public class ErrorHandler {
         return sendErrorResponse(ErrorType.ERROR, exception.getMessage());
     }
 
-    @ExceptionHandler({UserAlreadyExists.class})
+    @ExceptionHandler({UserAlreadyExists.class, ItemAlreadyExists.class})
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse userAlreadyExists(RuntimeException exception) {
+    public ErrorResponse entityAlreadyExists(RuntimeException exception) {
+        return sendErrorResponse(ErrorType.ERROR, exception.getMessage());
+    }
+
+    @ExceptionHandler({UserNotFound.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse entityNotFound(RuntimeException exception) {
+        return sendErrorResponse(ErrorType.ERROR, exception.getMessage());
+    }
+
+    @ExceptionHandler({WrongParameter.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse wrongParameter(RuntimeException exception) {
         return sendErrorResponse(ErrorType.ERROR, exception.getMessage());
     }
 

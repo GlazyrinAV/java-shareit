@@ -3,6 +3,7 @@ package ru.practicum.shareit.user;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
 import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.Collection;
@@ -23,6 +24,9 @@ public class UserService {
     }
 
     public User findById(int id) {
+        if (userStorage.findById(id) == null) {
+            throw new UserNotFound("Пользователь с ID " + id + " не найден.");
+        }
         return userStorage.findById(id);
     }
 

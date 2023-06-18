@@ -9,6 +9,8 @@ import lombok.Data;
 @Builder
 public class ItemDto {
 
+    private int id;
+
     private String name;
 
     private String description;

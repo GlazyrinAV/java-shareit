@@ -6,6 +6,7 @@ public class MapperToDto {
 
     public static ItemDto mapperToDto(Item item) {
         return ItemDto.builder()
+                .id(item.getId())
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable())
