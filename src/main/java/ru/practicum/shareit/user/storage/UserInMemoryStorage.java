@@ -7,7 +7,6 @@ import ru.practicum.shareit.exceptions.exceptions.UserAlreadyExists;
 import ru.practicum.shareit.exceptions.exceptions.ValidationException;
 import ru.practicum.shareit.user.User;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
