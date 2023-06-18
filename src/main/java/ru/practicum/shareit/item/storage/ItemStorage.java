@@ -6,7 +6,7 @@ import java.util.Collection;
 
 public interface ItemStorage {
 
-    Item saveNew(int ownerId, Item item);
+    Item saveNew(Item item);
 
     Collection<Item> findAllByUserID(int ownerId);
 
@@ -16,6 +16,6 @@ public interface ItemStorage {
 
     void removeById(int id);
 
-    Item updateById(int ownerId, Item itemDto);
+    Item updateById(int itemId, Item itemDto);
 
 }
