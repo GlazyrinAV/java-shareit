@@ -8,7 +8,6 @@ import ru.practicum.shareit.item.dto.ItemDto;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,7 +38,7 @@ public class ItemController {
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemDto> findByName(@RequestParam Optional<String> text) {
+    public Collection<ItemDto> findByName(@RequestParam String text) {
         return itemService.findByName(text);
     }
 

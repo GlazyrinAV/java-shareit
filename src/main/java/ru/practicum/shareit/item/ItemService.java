@@ -1,64 +1,21 @@
 package ru.practicum.shareit.item;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.MapperDto;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.storage.ItemStorage;
-import ru.practicum.shareit.user.UserService;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 
-@Service
-@Slf4j
-@RequiredArgsConstructor
-public class ItemService {
+public interface ItemService {
 
-    private final ItemStorage itemStorage;
-    private final UserService userService;
+    ItemDto saveNew(int ownerID, ItemDto itemDto);
 
-    public ItemDto saveNew(int ownerID, ItemDto itemDto) {
-        userService.findById(ownerID);
-        return MapperDto.toDto(itemStorage.saveNew(MapperDto.fromDto(ownerID, itemDto)));
-    }
+    Collection<ItemDto> findAllByUserID(int ownerId);
 
-    public Collection<ItemDto> findAllByUserID(int ownerId) {
-        userService.findById(ownerId);
-        Collection<ItemDto> dtoList = new ArrayList<>();
-        Collection<Item> itemList = itemStorage.findAllByUserID(ownerId);
-        for (Item item : itemList) {
-            dtoList.add(MapperDto.toDto(item));
-        }
-        return dtoList;
-    }
+    ItemDto findById(int id);
 
-    public ItemDto findById(int id) {
-        return MapperDto.toDto(itemStorage.findById(id));
-    }
+    Collection<ItemDto> findByName(String text);
 
-    public Collection<ItemDto> findByName(Optional<String> text) {
-        Collection<ItemDto> dtoList = new ArrayList<>();
-        if (text.isPresent()) {
-            Collection<Item> itemList = itemStorage.findByName(text.get());
-            for (Item item : itemList) {
-                dtoList.add(MapperDto.toDto(item));
-            }
-        }
-        return dtoList;
-    }
+    void removeById(int id);
 
-    public void removeById(int id) {
-        findById(id);
-        itemStorage.removeById(id);
-    }
-
-    public ItemDto updateById(int ownerID, int itemId, ItemDto itemDto) {
-        userService.findById(ownerID);
-        return MapperDto.toDto(itemStorage.updateById(ownerID, itemId, MapperDto.fromDto(ownerID, itemDto)));
-    }
+    ItemDto updateById(int ownerID, int itemId, ItemDto itemDto);
 
 }
