@@ -21,10 +21,9 @@ public class UserInMemoryStorage implements UserStorage {
 
     @Override
     public User saveNew(User user) {
-        for (User userInMemory : users.values()) {
-            if (userInMemory.getEmail().equalsIgnoreCase(user.getEmail())) {
-                throw new UserAlreadyExists("Указана почта существующего пользователя.");
-            }
+        if (users.values().stream()
+                .anyMatch(userInMemory -> userInMemory.getEmail().equalsIgnoreCase(user.getEmail()))) {
+            throw new UserAlreadyExists("Указана почта существующего пользователя.");
         }
         user.setId(setId());
         users.put(user.getId(), user);
@@ -58,10 +57,9 @@ public class UserInMemoryStorage implements UserStorage {
         if (user.getEmail() != null) {
             HashMap<Integer, User> usersToCheck = new HashMap<>(users);
             usersToCheck.remove(id);
-            for (User userInMemory : usersToCheck.values()) {
-                if (userInMemory.getEmail().equalsIgnoreCase(user.getEmail())) {
-                    throw new UserAlreadyExists("Указана почта существующего пользователя.");
-                }
+            if (usersToCheck.values().stream()
+                    .anyMatch(userInMemory -> userInMemory.getEmail().equalsIgnoreCase(user.getEmail()))) {
+                throw new UserAlreadyExists("Указана почта существующего пользователя.");
             }
             oldUser.setEmail(user.getEmail());
         }

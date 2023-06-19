@@ -11,6 +11,7 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -33,13 +34,9 @@ public class ItemInMemoryStorage implements ItemStorage {
 
     @Override
     public Collection<Item> findAllByUserID(int ownerId) {
-        Collection<Item> listOfItems = new ArrayList<>();
-        for (Item item : items.values()) {
-            if (item.getOwnerId() == ownerId) {
-                listOfItems.add(item);
-            }
-        }
-        return listOfItems;
+        return items.values().stream()
+                .filter(item -> item.getOwnerId() == ownerId)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -52,14 +49,10 @@ public class ItemInMemoryStorage implements ItemStorage {
 
     @Override
     public Collection<Item> findByName(String text) {
-        Collection<Item> listOfItems = new ArrayList<>();
-        for (Item item : items.values()) {
-            if (item.getAvailable() && !text.isBlank() && (item.getName().toLowerCase().contains(text.toLowerCase()) ||
-                    item.getDescription().toLowerCase().contains(text.toLowerCase()))) {
-                listOfItems.add(item);
-            }
-        }
-        return listOfItems;
+        return items.values().stream()
+                .filter(item -> item.getAvailable() && !text.isBlank() && (item.getName().toLowerCase().contains(text.toLowerCase()) ||
+                        item.getDescription().toLowerCase().contains(text.toLowerCase())))
+                .collect(Collectors.toList());
     }
 
     @Override
