@@ -2,6 +2,7 @@ package ru.practicum.shareit.user.storage;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exceptions.exceptions.UserAlreadyExists;
 import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 @Repository
 @RequiredArgsConstructor
 @Data
+@Slf4j
 public class UserInMemoryStorage implements UserStorage {
 
     private final HashMap<Integer, User> users = new HashMap<>();
@@ -27,11 +29,13 @@ public class UserInMemoryStorage implements UserStorage {
         }
         user.setId(setId());
         users.put(user.getId(), user);
+        log.info("Пользователь создан.");
         return user;
     }
 
     @Override
     public Collection<User> findAll() {
+        log.info("Поиск всех пользователей завершен.");
         return users.values();
     }
 
@@ -40,12 +44,15 @@ public class UserInMemoryStorage implements UserStorage {
         if (users.get(id) == null) {
             throw new UserNotFound("Пользователь с ID " + id + " не найден.");
         }
+        log.info("Пользователь найден.");
         return users.get(id);
     }
 
     @Override
     public void removeById(int id) {
-        users.remove(id);
+        if (users.remove(id) != null) {
+            log.info("Пользователь удален.");
+        }
     }
 
     @Override
@@ -63,6 +70,7 @@ public class UserInMemoryStorage implements UserStorage {
             }
             oldUser.setEmail(user.getEmail());
         }
+        log.info("Данные о пользователе обновлены.");
         users.replace(id, oldUser);
         return oldUser;
     }

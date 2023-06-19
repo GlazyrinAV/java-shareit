@@ -52,6 +52,7 @@ public class ItemService {
     }
 
     public void removeById(int id) {
+        findById(id);
         itemStorage.removeById(id);
     }
 
