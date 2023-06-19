@@ -3,8 +3,9 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.MapperDto;
+import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.user.UserServiceImpl;
@@ -19,24 +20,25 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemStorage itemStorage;
     private final UserServiceImpl userService;
+    private final ItemMapper itemMapper;
 
     public ItemDto saveNew(int ownerID, ItemDto itemDto) {
         userService.findById(ownerID);
-        return MapperDto.toDto(itemStorage.saveNew(MapperDto.fromDto(ownerID, itemDto)));
+        return itemMapper.toDto(itemStorage.saveNew(itemMapper.fromDto(ownerID, itemDto)));
     }
 
-    public Collection<ItemDto> findAllByUserID(int ownerId) {
+    public Collection<ItemDto> findAllByUserId(int ownerId) {
         userService.findById(ownerId);
         Collection<ItemDto> dtoList = new ArrayList<>();
         Collection<Item> itemList = itemStorage.findAllByUserID(ownerId);
         for (Item item : itemList) {
-            dtoList.add(MapperDto.toDto(item));
+            dtoList.add(itemMapper.toDto(item));
         }
         return dtoList;
     }
 
     public ItemDto findById(int id) {
-        return MapperDto.toDto(itemStorage.findById(id));
+        return itemMapper.toDto(itemStorage.findById(id));
     }
 
     public Collection<ItemDto> findByName(String text) {
@@ -44,20 +46,21 @@ public class ItemServiceImpl implements ItemService {
         if (text != null) {
             Collection<Item> itemList = itemStorage.findByName(text);
             for (Item item : itemList) {
-                dtoList.add(MapperDto.toDto(item));
+                dtoList.add(itemMapper.toDto(item));
             }
         }
         return dtoList;
     }
 
     public void removeById(int id) {
-        findById(id);
         itemStorage.removeById(id);
     }
 
     public ItemDto updateById(int ownerID, int itemId, ItemDto itemDto) {
-        userService.findById(ownerID);
-        return MapperDto.toDto(itemStorage.updateById(ownerID, itemId, MapperDto.fromDto(ownerID, itemDto)));
+        if (!userService.isExists(ownerID)) {
+            throw new UserNotFound("Пользователь с ID " + ownerID + " не найден.");
+        }
+        return itemMapper.toDto(itemStorage.updateById(ownerID, itemId, itemMapper.fromDto(ownerID, itemDto)));
     }
 
 }

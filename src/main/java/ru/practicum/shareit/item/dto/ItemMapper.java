@@ -1,10 +1,12 @@
 package ru.practicum.shareit.item.dto;
 
+import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.model.Item;
 
-public class MapperDto {
+@Component
+public class ItemMapper {
 
-    public static Item fromDto(int ownerID, ItemDto itemDto) {
+    public Item fromDto(int ownerID, ItemDto itemDto) {
         return Item.builder()
                 .ownerId(ownerID)
                 .name(itemDto.getName())
@@ -13,7 +15,7 @@ public class MapperDto {
                 .build();
     }
 
-    public static ItemDto toDto(Item item) {
+    public ItemDto toDto(Item item) {
         return ItemDto.builder()
                 .id(item.getId())
                 .name(item.getName())

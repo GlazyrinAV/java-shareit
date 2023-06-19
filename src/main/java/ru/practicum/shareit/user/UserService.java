@@ -14,4 +14,6 @@ public interface UserService {
 
     User updateById(int id, User user);
 
+    boolean isExists(int userId);
+
 }

@@ -16,4 +16,6 @@ public interface UserStorage {
 
     User updateById(int id, User user);
 
+    boolean isExists(int userId);
+
 }

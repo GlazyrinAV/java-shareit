@@ -41,7 +41,7 @@ public class UserInMemoryStorage implements UserStorage {
 
     @Override
     public User findById(int id) {
-        if (users.get(id) == null) {
+        if (!users.containsKey(id)) {
             throw new UserNotFound("Пользователь с ID " + id + " не найден.");
         }
         log.info("Пользователь найден.");
@@ -73,6 +73,11 @@ public class UserInMemoryStorage implements UserStorage {
         log.info("Данные о пользователе обновлены.");
         users.replace(id, oldUser);
         return oldUser;
+    }
+
+    @Override
+    public boolean isExists(int userId) {
+        return users.containsKey(userId);
     }
 
     private static int setId() {

@@ -27,7 +27,7 @@ public class ItemController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Collection<ItemDto> findAllByUserID(@RequestHeader("X-Sharer-User-Id") int ownerId) {
-        return itemService.findAllByUserID(ownerId);
+        return itemService.findAllByUserId(ownerId);
     }
 
     @GetMapping("/{id}")

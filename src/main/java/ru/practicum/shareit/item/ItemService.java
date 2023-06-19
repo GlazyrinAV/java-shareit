@@ -8,7 +8,7 @@ public interface ItemService {
 
     ItemDto saveNew(int ownerID, ItemDto itemDto);
 
-    Collection<ItemDto> findAllByUserID(int ownerId);
+    Collection<ItemDto> findAllByUserId(int ownerId);
 
     ItemDto findById(int id);
 
