@@ -57,8 +57,8 @@ public class ItemInMemoryStorage implements ItemStorage {
     public Collection<Item> findByName(String text) {
         Collection<Item> listOfItems = new ArrayList<>();
         for (Item item : items.values()) {
-            if (item.getName().toLowerCase().contains(text.toLowerCase()) ||
-                    item.getDescription().toLowerCase().contains(text.toLowerCase())) {
+            if (item.getAvailable() && !text.isBlank() && (item.getName().toLowerCase().contains(text.toLowerCase()) ||
+                    item.getDescription().toLowerCase().contains(text.toLowerCase()))) {
                 listOfItems.add(item);
             }
         }
