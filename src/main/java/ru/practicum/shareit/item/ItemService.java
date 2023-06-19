@@ -12,6 +12,7 @@ import ru.practicum.shareit.user.UserService;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -40,11 +41,13 @@ public class ItemService {
         return MapperDto.toDto(itemStorage.findById(id));
     }
 
-    public Collection<ItemDto> findByName(String text) {
+    public Collection<ItemDto> findByName(Optional<String> text) {
         Collection<ItemDto> dtoList = new ArrayList<>();
-        Collection<Item> itemList = itemStorage.findByName(text);
-        for (Item item : itemList) {
-            dtoList.add(MapperDto.toDto(item));
+        if (text.isPresent()) {
+            Collection<Item> itemList = itemStorage.findByName(text.get());
+            for (Item item : itemList) {
+                dtoList.add(MapperDto.toDto(item));
+            }
         }
         return dtoList;
     }

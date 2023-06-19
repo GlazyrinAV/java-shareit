@@ -24,7 +24,7 @@ public class ErrorHandler {
         return sendErrorResponse(ErrorType.ERROR, exception.getMessage());
     }
 
-    @ExceptionHandler({UserNotFound.class})
+    @ExceptionHandler({UserNotFound.class, ItemNotFound.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse entityNotFound(RuntimeException exception) {
         return sendErrorResponse(ErrorType.ERROR, exception.getMessage());

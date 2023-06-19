@@ -30,14 +30,14 @@ public class ItemController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto findById(int id) {
+    public ItemDto findById(@PathVariable int id) {
         return itemService.findById(id);
     }
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     public Collection<ItemDto> findByName(@RequestParam Optional<String> text) {
-        return itemService.findByName(text.get());
+        return itemService.findByName(text);
     }
 
     @DeleteMapping("/{id}")

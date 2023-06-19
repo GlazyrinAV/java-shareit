@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.storage;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.practicum.shareit.exceptions.exceptions.ItemNotFound;
 import ru.practicum.shareit.exceptions.exceptions.WrongOwner;
 import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
 import ru.practicum.shareit.item.model.Item;
@@ -46,6 +47,9 @@ public class ItemInMemoryStorage implements ItemStorage {
 
     @Override
     public Item findById(int id) {
+        if (items.get(id) == null) {
+            throw new ItemNotFound("Вещь с ID " + id + " не найдена.");
+        }
         return items.get(id);
     }
 
