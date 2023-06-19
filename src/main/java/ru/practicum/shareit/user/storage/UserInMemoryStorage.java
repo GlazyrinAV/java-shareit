@@ -29,7 +29,7 @@ public class UserInMemoryStorage implements UserStorage {
                 throw new UserAlreadyExists("Указана почта существующего пользователя.");
             }
         }
-        user.setId(id++);
+        user.setId(setId());
         users.put(user.getId(), user);
         return user;
     }
@@ -68,4 +68,9 @@ public class UserInMemoryStorage implements UserStorage {
         users.replace(id, oldUser);
         return oldUser;
     }
+
+    private static int setId() {
+        return id++;
+    }
+
 }

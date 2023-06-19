@@ -19,7 +19,7 @@ public class ItemInMemoryStorage implements ItemStorage {
 
     private final HashMap<Integer, Item> items = new HashMap<>();
 
-    private static int itemId = 1;
+    private static int id = 1;
 
     @Override
     public Item saveNew(Item item) {
@@ -29,7 +29,7 @@ public class ItemInMemoryStorage implements ItemStorage {
         if (item.getAvailable() == null) {
             throw new WrongParameter("не указаны данные о доступности.");
         }
-        item.setId(itemId++);
+        item.setId(setId());
         items.put(item.getId(), item);
         return item;
     }
@@ -67,7 +67,7 @@ public class ItemInMemoryStorage implements ItemStorage {
 
     @Override
     public void removeById(int id) {
-        items.remove(itemId);
+        items.remove(ItemInMemoryStorage.id);
     }
 
     @Override
@@ -93,6 +93,10 @@ public class ItemInMemoryStorage implements ItemStorage {
         }
         items.replace(oldItem.getId(), oldItem);
         return oldItem;
+    }
+
+    private static int setId() {
+        return id++;
     }
 
 }
