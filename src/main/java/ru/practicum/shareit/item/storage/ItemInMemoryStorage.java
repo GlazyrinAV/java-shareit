@@ -8,7 +8,6 @@ import ru.practicum.shareit.exceptions.exceptions.WrongOwner;
 import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
 import ru.practicum.shareit.item.model.Item;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.stream.Collectors;
