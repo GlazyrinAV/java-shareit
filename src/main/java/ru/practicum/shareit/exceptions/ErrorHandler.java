@@ -12,12 +12,6 @@ import ru.practicum.shareit.exceptions.exceptions.*;
 @Slf4j
 public class ErrorHandler {
 
-    @ExceptionHandler({ValidationException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse validationException(RuntimeException exception) {
-        return sendErrorResponse(ErrorType.ERROR, exception.getMessage());
-    }
-
     @ExceptionHandler({UserAlreadyExists.class, ItemAlreadyExists.class})
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse entityAlreadyExists(RuntimeException exception) {

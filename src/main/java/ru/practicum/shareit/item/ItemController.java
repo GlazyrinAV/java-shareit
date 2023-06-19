@@ -1,15 +1,18 @@
 package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/items")
 public class ItemController {
 
@@ -18,7 +21,7 @@ public class ItemController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto saveNew(@RequestHeader("X-Sharer-User-Id") int ownerId,
-                           @RequestBody ItemDto itemDto) {
+                           @Valid @RequestBody ItemDto itemDto) {
         return itemService.saveNew(ownerId, itemDto);
     }
 

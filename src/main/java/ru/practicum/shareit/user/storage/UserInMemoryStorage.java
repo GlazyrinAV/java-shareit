@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exceptions.exceptions.UserAlreadyExists;
-import ru.practicum.shareit.exceptions.exceptions.ValidationException;
+import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
 import ru.practicum.shareit.user.User;
 
 import java.util.Collection;
@@ -21,9 +21,6 @@ public class UserInMemoryStorage implements UserStorage {
 
     @Override
     public User saveNew(User user) {
-        if (user.getName() == null || user.getEmail() == null) {
-            throw new ValidationException("Неправильно указаны параметры нового пользователя.");
-        }
         for (User userInMemory : users.values()) {
             if (userInMemory.getEmail().equalsIgnoreCase(user.getEmail())) {
                 throw new UserAlreadyExists("Указана почта существующего пользователя.");
@@ -41,6 +38,9 @@ public class UserInMemoryStorage implements UserStorage {
 
     @Override
     public User findById(int id) {
+        if (users.get(id) == null) {
+            throw new UserNotFound("Пользователь с ID " + id + " не найден.");
+        }
         return users.get(id);
     }
 
@@ -52,7 +52,7 @@ public class UserInMemoryStorage implements UserStorage {
     @Override
     public User updateById(int id, User user) {
         User oldUser = users.get(id);
-        if (user.getName() != null) {
+        if (user.getName() != null && !user.getName().isBlank()) {
             oldUser.setName(user.getName());
         }
         if (user.getEmail() != null) {

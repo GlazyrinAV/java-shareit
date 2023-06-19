@@ -23,11 +23,8 @@ public class ItemInMemoryStorage implements ItemStorage {
 
     @Override
     public Item saveNew(Item item) {
-        if (item.getName() == null || item.getName().isBlank() || item.getDescription() == null || item.getDescription().isBlank()) {
-            throw  new WrongParameter("Неправильно указаны параметры нового вещи.");
-        }
         if (item.getAvailable() == null) {
-            throw new WrongParameter("не указаны данные о доступности.");
+            throw new WrongParameter("не указаны данные о доступности вещи.");
         }
         item.setId(setId());
         items.put(item.getId(), item);
