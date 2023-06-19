@@ -40,7 +40,8 @@ public class UserController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User updateById(@PathVariable int id, @RequestBody User user) {
+    public User updateById(@PathVariable int id,
+                           @RequestBody User user) {
         return userService.updateById(id, user);
     }
 

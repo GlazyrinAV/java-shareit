@@ -16,6 +16,6 @@ public interface ItemStorage {
 
     void removeById(int id);
 
-    Item updateById(int itemId, Item itemDto);
+    Item updateById(int ownerId, int itemId, Item itemDto);
 
 }

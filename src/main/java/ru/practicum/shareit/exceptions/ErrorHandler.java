@@ -36,6 +36,12 @@ public class ErrorHandler {
         return sendErrorResponse(ErrorType.ERROR, exception.getMessage());
     }
 
+    @ExceptionHandler({WrongOwner.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse wrongOwner(RuntimeException exception) {
+        return sendErrorResponse(ErrorType.ERROR, exception.getMessage());
+    }
+
     private ErrorResponse sendErrorResponse(ErrorType errorType, String description) {
         log.info(description);
         return new ErrorResponse(errorType, description);

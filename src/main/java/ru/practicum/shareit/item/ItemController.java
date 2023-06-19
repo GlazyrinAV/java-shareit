@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 
-import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -18,7 +17,8 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto saveNew(@RequestHeader("X-Sharer-User-Id") int ownerId, @Valid @RequestBody ItemDto itemDto) {
+    public ItemDto saveNew(@RequestHeader("X-Sharer-User-Id") int ownerId,
+                           @RequestBody ItemDto itemDto) {
         return itemService.saveNew(ownerId, itemDto);
     }
 
@@ -42,14 +42,16 @@ public class ItemController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeById(int id) {
+    public void removeById(@PathVariable int id) {
         itemService.removeById(id);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto updateById(@RequestHeader("X-Sharer-User-Id") int ownerId, int itemId, @Valid @RequestBody ItemDto itemDto) {
-        return itemService.updateById(ownerId, itemId, itemDto);
+    public ItemDto updateById(@RequestHeader("X-Sharer-User-Id") int ownerId,
+                              @PathVariable int id,
+                              @RequestBody ItemDto itemDto) {
+        return itemService.updateById(ownerId, id, itemDto);
     }
 
 }

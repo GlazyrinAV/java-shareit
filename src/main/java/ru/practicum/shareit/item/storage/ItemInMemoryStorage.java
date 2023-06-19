@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.storage;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.practicum.shareit.exceptions.exceptions.WrongOwner;
 import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
 import ru.practicum.shareit.item.model.Item;
 
@@ -22,7 +23,7 @@ public class ItemInMemoryStorage implements ItemStorage {
     @Override
     public Item saveNew(Item item) {
         if (item.getName() == null || item.getName().isBlank() || item.getDescription() == null || item.getDescription().isBlank()) {
-            throw  new WrongParameter("Неправильно указаны параметры нового предмета.");
+            throw  new WrongParameter("Неправильно указаны параметры нового вещи.");
         }
         if (item.getAvailable() == null) {
             throw new WrongParameter("не указаны данные о доступности.");
@@ -66,18 +67,27 @@ public class ItemInMemoryStorage implements ItemStorage {
     }
 
     @Override
-    public Item updateById(int itemId, Item item) {
+    public Item updateById(int ownerId, int itemId, Item item) {
         Item oldItem = items.get(itemId);
+        if (ownerId != oldItem.getOwnerId()) {
+            throw new WrongOwner("Данный пользователь не является собственником вещи.");
+        }
         if (item.getName() != null) {
+            if (item.getName().isBlank()) {
+                throw  new WrongParameter("Новое имя вещи не может быть пустым.");
+            }
             oldItem.setName(item.getName());
         }
         if (item.getDescription() != null) {
+            if (item.getDescription().isBlank()) {
+                throw  new WrongParameter("Новое описание вещи не может быть пустым.");
+            }
             oldItem.setDescription(item.getDescription());
         }
         if (item.getAvailable() != null) {
             oldItem.setAvailable(item.getAvailable());
         }
-        items.remove(oldItem.getId(), oldItem);
+        items.replace(oldItem.getId(), oldItem);
         return oldItem;
     }
 
