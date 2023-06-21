@@ -6,15 +6,15 @@ import java.util.Collection;
 
 public interface ItemService {
 
-    ItemDto saveNew(int ownerID, ItemDto itemDto);
+    ItemDto save(int ownerID, ItemDto itemDto);
 
-    Collection<ItemDto> findAllByUserId(int ownerId);
+    Collection<ItemDto> findAllByUserId(Integer ownerId);
 
     ItemDto findById(int id);
 
     Collection<ItemDto> findByName(String text);
 
-    void removeById(int id);
+    void deleteById(int id);
 
     ItemDto updateById(int ownerID, int itemId, ItemDto itemDto);
 
