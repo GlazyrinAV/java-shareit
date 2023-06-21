@@ -2,9 +2,11 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.utils.Constants;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -19,14 +21,14 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto saveNew(@RequestHeader("X-Sharer-User-Id") int ownerId,
+    public ItemDto saveNew(@RequestHeader(Constants.OWNER_HEADER) int ownerId,
                            @Valid @RequestBody ItemDto itemDto) {
         return itemService.saveNew(ownerId, itemDto);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemDto> findAllByUserID(@RequestHeader("X-Sharer-User-Id") int ownerId) {
+    public Collection<ItemDto> findAllByUserID(@RequestHeader(Constants.OWNER_HEADER) int ownerId) {
         return itemService.findAllByUserId(ownerId);
     }
 
@@ -50,7 +52,7 @@ public class ItemController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto updateById(@RequestHeader("X-Sharer-User-Id") int ownerId,
+    public ItemDto updateById(@RequestHeader(Constants.OWNER_HEADER) int ownerId,
                               @PathVariable int id,
                               @RequestBody ItemDto itemDto) {
         return itemService.updateById(ownerId, id, itemDto);
