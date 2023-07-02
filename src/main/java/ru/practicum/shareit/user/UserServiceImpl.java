@@ -1,22 +1,29 @@
 package ru.practicum.shareit.user;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserDtoMapper;
 import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.Collection;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserStorage userStorage;
 
+    private final UserDtoMapper userDtoMapper;
+
+    public UserServiceImpl(UserStorage userStorage, UserDtoMapper userDtoMapper) {
+        this.userStorage = userStorage;
+        this.userDtoMapper = userDtoMapper;
+    }
+
     @Override
-    public User saveNew(User user) {
-        return userStorage.saveNew(user);
+    public UserDto save(User user) {
+        return userDtoMapper.mapToDto(userStorage.save(user));
     }
 
     @Override
@@ -26,22 +33,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(int id) {
-        return userStorage.findById(id);
+        return userStorage.findById(id).get();
     }
 
     @Override
-    public void removeById(int id) {
-        userStorage.removeById(id);
+    public void deleteById(int id) {
+        userStorage.deleteById(id);
     }
 
     @Override
-    public User updateById(int id, User user) {
-        return userStorage.updateById(id, user);
+    public UserDto updateById(int id, User user) {
+        User userFromDB = userStorage.findById(id).get();
+        if (user.getName() != null && !user.getName().isEmpty()) {
+            userFromDB.setName(user.getName());
+        }
+        if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+            userFromDB.setEmail(user.getEmail());
+        }
+        return userDtoMapper.mapToDto(userStorage.save(userFromDB));
     }
 
     @Override
     public boolean isExists(int userId) {
-        return userStorage.isExists(userId);
+        return userStorage.existsById(userId);
     }
 
 }

@@ -1,18 +1,20 @@
 package ru.practicum.shareit.user;
 
+import ru.practicum.shareit.user.dto.UserDto;
+
 import java.util.Collection;
 
 public interface UserService {
 
-    User saveNew(User user);
+    UserDto save(User user);
 
     Collection<User> findAll();
 
     User findById(int id);
 
-    void removeById(int id);
+    void deleteById(int id);
 
-    User updateById(int id, User user);
+    UserDto updateById(int id, User user);
 
     boolean isExists(int userId);
 

@@ -1,22 +1,33 @@
-package ru.practicum.shareit.item.model;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-
-@Data
-@Builder
-@AllArgsConstructor
-public class Item {
-
-    private int id;
-
-    private String name;
-
-    private String description;
-
-    private Boolean available;
-
-    private final int ownerId;
-
-}
+//package ru.practicum.shareit.item.model;
+//
+//import lombok.*;
+//import ru.practicum.shareit.user.User;
+//
+//import javax.persistence.*;
+//
+//@Data
+//@Builder
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Entity
+//@Table(name = "Item", schema = "public")
+//public class Item {
+//
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private int id;
+//
+//    @Column(name = "name")
+//    private String name;
+//
+//    @Column(name = "description")
+//    private String description;
+//
+//    @Column(name = "available")
+//    private Boolean available;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id", nullable = false)
+//    private User owner;
+//
+//}
