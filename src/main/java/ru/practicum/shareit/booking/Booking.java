@@ -6,10 +6,9 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.utils.BookingStatus;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -28,7 +27,7 @@ public class Booking {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booker")
     private User booker;
 
@@ -37,9 +36,9 @@ public class Booking {
     private BookingStatus status;
 
     @Column(name = "start")
-    private LocalDate start;
+    private LocalDateTime start;
 
     @Column(name = "finish")
-    private LocalDate end;
+    private LocalDateTime end;
 
 }

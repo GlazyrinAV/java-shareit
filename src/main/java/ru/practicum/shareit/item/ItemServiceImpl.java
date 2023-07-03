@@ -3,10 +3,13 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.booking.BookingRepository;
+import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.exceptions.exceptions.ItemNotFound;
 import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
 import ru.practicum.shareit.exceptions.exceptions.WrongOwner;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemDtoWithTime;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.user.UserServiceImpl;
 
@@ -23,6 +26,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserServiceImpl userService;
     private final ItemMapper itemMapper;
+    private final BookingRepository bookingRepository;
 
     @Override
     public ItemDto save(int ownerID, ItemDto itemDto) {
@@ -31,9 +35,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Collection<ItemDto> findAllByUserId(Integer ownerId) {
+    public Collection<ItemDtoWithTime> findAllByUserId(Integer ownerId) {
         checkUserExistence(ownerId);
-        return itemRepository.findAllWhereOwnerIdIn(ownerId).stream().map(itemMapper::toDto).collect(Collectors.toList());
+        ItemDtoWithTime item;
+        BookingDto nextBooking;
+        BookingDto lastBooking;
+        return itemRepository.findAllWhereOwnerIdIn(ownerId).stream()
+                .map(itemMapper::toDtoWithTime)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -81,6 +90,11 @@ public class ItemServiceImpl implements ItemService {
             item.get().setAvailable(itemDto.getAvailable());
         }
         return itemMapper.toDto(itemRepository.save(item.get()));
+    }
+
+    @Override
+    public boolean isExists(int itemId) {
+        return itemRepository.existsById(itemId);
     }
 
     private void checkUserExistence(int userId) {

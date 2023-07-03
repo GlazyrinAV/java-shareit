@@ -32,8 +32,8 @@ create table if not exists PUBLIC."Booking"
     BOOKER  INTEGER           not null,
     ITEM_ID INTEGER           not null,
     STATUS  CHARACTER VARYING not null,
-    START   DATE,
-    FINISH  DATE
+    START   TIMESTAMP without TIME ZONE,
+    FINISH  TIMESTAMP without TIME ZONE
 );
 
 

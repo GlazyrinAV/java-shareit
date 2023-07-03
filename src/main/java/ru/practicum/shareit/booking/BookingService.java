@@ -1,19 +1,20 @@
 package ru.practicum.shareit.booking;
 
 import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.booking.dto.NewBookingDto;
 
 import java.util.Collection;
 
 public interface BookingService {
 
-    BookingDto save(BookingDto bookingDto, int userId);
+    BookingDto save(NewBookingDto dto, int userId);
 
-    BookingDto update(BookingDto bookingDto, int bookingId, int ownerId);
+    BookingDto update(int bookingId, int ownerId, boolean status);
 
     BookingDto findById(int bookingId, int ownerId);
 
-    Collection<BookingDto> findByState(String state, int userId);
+    Collection<BookingDto> findByState(BookingState state, int userId);
 
-    Collection<BookingDto> findByOwner(String state, int userId);
+    Collection<BookingDto> findByOwner(BookingState state, int userId);
 
 }
