@@ -18,4 +18,6 @@ public interface ItemService {
 
     ItemDto updateById(int ownerID, int itemId, ItemDto itemDto);
 
+    boolean isExists(int itemId);
+
 }

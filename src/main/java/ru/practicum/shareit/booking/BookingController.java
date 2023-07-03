@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.booking.dto.NewBookingDto;
 import ru.practicum.shareit.utils.Constants;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
@@ -17,17 +19,17 @@ public class BookingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookingDto save(@RequestBody BookingDto bookingDto,
+    public BookingDto save(@Valid @RequestBody NewBookingDto dto,
                            @RequestHeader(Constants.OWNER_HEADER) int userId) {
-        return bookingService.save(bookingDto, userId);
+        return bookingService.save(dto, userId);
     }
 
     @PatchMapping("/{bookingId}")
     @ResponseStatus(HttpStatus.OK)
-    public BookingDto update(@RequestBody BookingDto bookingDto,
+    public BookingDto update(@RequestBody BookingDto dto,
                              @PathVariable int bookingId,
                              @RequestHeader(Constants.OWNER_HEADER) int ownerId) {
-        return bookingService.update(bookingDto, bookingId, ownerId);
+        return bookingService.update(dto, bookingId, ownerId);
     }
 
     @GetMapping("/{bookingId}")

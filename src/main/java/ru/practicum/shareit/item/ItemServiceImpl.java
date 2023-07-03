@@ -83,6 +83,11 @@ public class ItemServiceImpl implements ItemService {
         return itemMapper.toDto(itemRepository.save(item.get()));
     }
 
+    @Override
+    public boolean isExists(int itemId) {
+        return itemRepository.existsById(itemId);
+    }
+
     private void checkUserExistence(int userId) {
         if (!userService.isExists(userId)) {
             throw new UserNotFound("Пользователь с ID " + userId + " не найден.");
