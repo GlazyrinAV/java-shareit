@@ -56,4 +56,11 @@ public class BookingMapper {
                 .collect(Collectors.toList());
     }
 
+    public BookingDtoShort toDtoShort(Booking booking) {
+        return BookingDtoShort.builder()
+                .id(booking.getId())
+                .bookerId(booking.getBooker().getId())
+                .build();
+    }
+
 }

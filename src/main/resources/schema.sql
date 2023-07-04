@@ -36,4 +36,13 @@ create table if not exists PUBLIC."Booking"
     FINISH  TIMESTAMP without TIME ZONE
 );
 
+Drop table if exists PUBLIC."Comments";
 
+create table if not exists PUBLIC."Comments"
+(
+    "Id"        INTEGER generated always as identity,
+    "Item_id"   INTEGER           not null,
+    "Author_id" INTEGER           not null,
+    "Text"      CHARACTER VARYING not null,
+    "Created"   TIMESTAMP         not null
+);
