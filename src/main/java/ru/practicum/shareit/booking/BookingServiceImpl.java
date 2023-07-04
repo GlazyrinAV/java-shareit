@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingMapper;
 import ru.practicum.shareit.booking.dto.NewBookingDto;
-import ru.practicum.shareit.exceptions.exceptions.BookingNotFound;
-import ru.practicum.shareit.exceptions.exceptions.ItemNotFound;
-import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
-import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
+import ru.practicum.shareit.exceptions.exceptions.*;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.user.UserService;
@@ -87,10 +84,16 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Collection<BookingDto> findByState(BookingState state, int userId) {
+    public Collection<BookingDto> findByState(String state, int userId) {
         checkUserExistence(userId);
-        Collection<BookingDto> bookings = null;
-        switch (state) {
+        BookingState bookingState;
+        try {
+            bookingState = BookingState.valueOf(state);
+        } catch (IllegalArgumentException exception) {
+            throw new WrongEnumParameter("Unknown state: " + state);
+        }
+        Collection<BookingDto> bookings;
+        switch (bookingState) {
             case ALL:
                 bookings = bookingMapper.toDto(bookingRepository.findByBooker_IdEqualsOrderByStartDesc(userId));
                 break;
@@ -116,10 +119,16 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Collection<BookingDto> findByOwner(BookingState state, int userId) {
+    public Collection<BookingDto> findByOwner(String state, int userId) {
         checkUserExistence(userId);
-        Collection<BookingDto> bookings = null;
-        switch (state) {
+        BookingState bookingState;
+        try {
+            bookingState = BookingState.valueOf(state);
+        } catch (IllegalArgumentException exception) {
+            throw new WrongEnumParameter("Unknown state: " + state);
+        }
+        Collection<BookingDto> bookings;
+        switch (bookingState) {
             case ALL:
                 bookings = bookingMapper.toDto(bookingRepository.findByItem_Owner_IdOrderByStartDesc(userId));
                 break;

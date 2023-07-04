@@ -11,7 +11,7 @@ public interface ItemService {
 
     Collection<ItemDtoWithTime> findAllByUserId(Integer ownerId);
 
-    ItemDto findById(int id);
+    ItemDtoWithTime findById(int id, int ownerId);
 
     Collection<ItemDto> findByName(String text);
 

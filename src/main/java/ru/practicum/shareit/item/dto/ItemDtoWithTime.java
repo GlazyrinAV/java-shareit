@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.booking.dto.BookingDtoShort;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -28,8 +28,8 @@ public class ItemDtoWithTime {
     @NotNull
     private Boolean available;
 
-    private BookingDto lastBooking;
+    private BookingDtoShort lastBooking;
 
-    private BookingDto nextBooking;
+    private BookingDtoShort nextBooking;
 
 }

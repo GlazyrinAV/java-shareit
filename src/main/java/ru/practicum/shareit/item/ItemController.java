@@ -34,8 +34,9 @@ public class ItemController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto findById(@PathVariable int id) {
-        return itemService.findById(id);
+    public ItemDtoWithTime findById(@PathVariable int id,
+                                    @RequestHeader(Constants.OWNER_HEADER) int ownerId) {
+        return itemService.findById(id, ownerId);
     }
 
     @GetMapping("/search")

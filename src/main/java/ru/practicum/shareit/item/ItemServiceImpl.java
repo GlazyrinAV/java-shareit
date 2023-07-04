@@ -3,16 +3,19 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingRepository;
-import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.booking.dto.BookingMapper;
 import ru.practicum.shareit.exceptions.exceptions.ItemNotFound;
 import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
 import ru.practicum.shareit.exceptions.exceptions.WrongOwner;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoWithTime;
 import ru.practicum.shareit.item.dto.ItemMapper;
+import ru.practicum.shareit.item.dto.ItemMapperWithTime;
 import ru.practicum.shareit.user.UserServiceImpl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -26,7 +29,9 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserServiceImpl userService;
     private final ItemMapper itemMapper;
+    private final ItemMapperWithTime itemMapperWithTime;
     private final BookingRepository bookingRepository;
+    private final BookingMapper bookingMapper;
 
     @Override
     public ItemDto save(int ownerID, ItemDto itemDto) {
@@ -37,21 +42,41 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Collection<ItemDtoWithTime> findAllByUserId(Integer ownerId) {
         checkUserExistence(ownerId);
-        ItemDtoWithTime item;
-        BookingDto nextBooking;
-        BookingDto lastBooking;
-        return itemRepository.findAllWhereOwnerIdIn(ownerId).stream()
-                .map(itemMapper::toDtoWithTime)
+        Collection<ItemDtoWithTime> items = itemRepository.findAllWhereOwnerIdIn(ownerId).stream()
+                .map(itemMapperWithTime::toDtoWithTime)
                 .collect(Collectors.toList());
+        for (ItemDtoWithTime item : items) {
+            Booking nextBooking = bookingRepository.findFirstByItem_IdAndStartAfterOrderByStart(item.getId(), LocalDateTime.now());
+            if (nextBooking != null) {
+                item.setNextBooking(bookingMapper.toDtoShort(nextBooking));
+            }
+            Booking lastBooking = bookingRepository.findFirstByItem_IdAndEndBeforeOrderByEndDesc(item.getId(), LocalDateTime.now());
+            if (lastBooking != null) {
+                item.setLastBooking(bookingMapper.toDtoShort(lastBooking));
+            }
+        }
+        return items;
     }
 
     @Override
-    public ItemDto findById(int id) {
+    public ItemDtoWithTime findById(int id, int ownerId) {
         Optional<Item> item = itemRepository.findById(id);
         if (item.isEmpty()) {
             throw new ItemNotFound("Предмет с ID " + id + " не найдена.");
         }
-        return itemMapper.toDto(item.get());
+        ItemDtoWithTime itemDtoWithTime = itemMapperWithTime.toDtoWithTime(item.get());
+        if (item.get().getOwner().getId() != ownerId) {
+            return itemDtoWithTime;
+        }
+        Booking nextBooking = bookingRepository.findFirstByItem_IdAndStartAfterOrderByStart(item.get().getId(), LocalDateTime.now());
+        if (nextBooking != null) {
+            itemDtoWithTime.setNextBooking(bookingMapper.toDtoShort(nextBooking));
+        }
+        Booking lastBooking = bookingRepository.findFirstByItem_IdAndEndBeforeOrderByEndDesc(item.get().getId(), LocalDateTime.now());
+        if (lastBooking != null) {
+            itemDtoWithTime.setLastBooking(bookingMapper.toDtoShort(lastBooking));
+        }
+        return itemDtoWithTime;
     }
 
     @Override
