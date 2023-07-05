@@ -19,20 +19,21 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "ITEM_ID")
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "AUTHOR_ID")
     private User author;
 
-    @Column(name = "text")
+    @Column(name = "TEXT")
     private String text;
 
-    @Column(name = "created")
+    @Column(name = "CREATED")
     private LocalDateTime created;
 
 }

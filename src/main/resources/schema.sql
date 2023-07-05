@@ -40,9 +40,9 @@ Drop table if exists PUBLIC.COMMENTS;
 
 create table if not exists PUBLIC."COMMENTS"
 (
-    "Id"        INTEGER generated always as identity,
-    "Item_id"   INTEGER           not null,
-    "Author_id" INTEGER           not null,
-    "Text"      CHARACTER VARYING not null,
-    "Created"   TIMESTAMP         not null
+    "ID"        INTEGER generated always as identity,
+    "ITEM_ID"   INTEGER           not null,
+    "AUTHOR_ID" INTEGER           not null,
+    "TEXT"      CHARACTER VARYING not null,
+    "CREATED"   TIMESTAMP         not null
 );
