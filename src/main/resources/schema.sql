@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS PUBLIC."User" CASCADE ;
+DROP TABLE IF EXISTS PUBLIC."USERS" CASCADE ;
 
-create table if not exists PUBLIC."Users"
+create table if not exists PUBLIC."USERS"
 (
     ID    INTEGER generated always as identity
         primary key,
@@ -9,9 +9,9 @@ create table if not exists PUBLIC."Users"
         unique
 );
 
-drop table if exists PUBLIC."Items" CASCADE ;
+drop table if exists PUBLIC."ITEM" CASCADE ;
 
-create table if not exists PUBLIC."Item"
+create table if not exists PUBLIC."ITEM"
 (
     ID          INTEGER generated always as identity,
     NAME        CHARACTER VARYING not null,
@@ -21,12 +21,12 @@ create table if not exists PUBLIC."Item"
     constraint "Items_pk"
         primary key (ID),
     constraint ITEMS_USERS_ID_FK
-        foreign key (OWNER_ID) references PUBLIC."Users"
+        foreign key (OWNER_ID) references PUBLIC.USERS
 );
 
-drop table if exists PUBLIC."Booking";
+drop table if exists PUBLIC.BOOKING;
 
-create table if not exists PUBLIC."Booking"
+create table if not exists PUBLIC."BOOKING"
 (
     ID      INTEGER generated always as identity,
     BOOKER  INTEGER           not null,
@@ -36,9 +36,9 @@ create table if not exists PUBLIC."Booking"
     FINISH  TIMESTAMP without TIME ZONE
 );
 
-Drop table if exists PUBLIC."Comments";
+Drop table if exists PUBLIC.COMMENTS;
 
-create table if not exists PUBLIC."Comments"
+create table if not exists PUBLIC."COMMENTS"
 (
     "Id"        INTEGER generated always as identity,
     "Item_id"   INTEGER           not null,
