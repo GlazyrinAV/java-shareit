@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemDtoWithTime;
+import ru.practicum.shareit.utils.Constants;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -19,21 +22,22 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto saveNew(@RequestHeader("X-Sharer-User-Id") int ownerId,
-                           @Valid @RequestBody ItemDto itemDto) {
-        return itemService.saveNew(ownerId, itemDto);
+    public ItemDto save(@RequestHeader(Constants.OWNER_HEADER) int ownerId,
+                        @Valid @RequestBody ItemDto itemDto) {
+        return itemService.save(ownerId, itemDto);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemDto> findAllByUserID(@RequestHeader("X-Sharer-User-Id") int ownerId) {
+    public Collection<ItemDtoWithTime> findAllByUserID(@RequestHeader(Constants.OWNER_HEADER) int ownerId) {
         return itemService.findAllByUserId(ownerId);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto findById(@PathVariable int id) {
-        return itemService.findById(id);
+    public ItemDtoWithTime findById(@PathVariable int id,
+                                    @RequestHeader(Constants.OWNER_HEADER) int ownerId) {
+        return itemService.findById(id, ownerId);
     }
 
     @GetMapping("/search")
@@ -44,16 +48,24 @@ public class ItemController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeById(@PathVariable int id) {
-        itemService.removeById(id);
+    public void deleteById(@PathVariable int id) {
+        itemService.deleteById(id);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto updateById(@RequestHeader("X-Sharer-User-Id") int ownerId,
+    public ItemDto updateById(@RequestHeader(Constants.OWNER_HEADER) int ownerId,
                               @PathVariable int id,
                               @RequestBody ItemDto itemDto) {
         return itemService.updateById(ownerId, id, itemDto);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    @ResponseStatus(HttpStatus.OK)
+    public CommentDto saveComment(@RequestHeader(Constants.OWNER_HEADER) int userId,
+                                  @PathVariable int itemId,
+                                  @Valid @RequestBody CommentDto dto) {
+        return itemService.saveComment(userId, itemId, dto);
     }
 
 }

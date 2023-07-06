@@ -1,25 +1,28 @@
 package ru.practicum.shareit.user;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.user.dto.UserDto;
 
 import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(path = "/users")
 @Slf4j
 public class UserController {
 
     private final UserService userService;
 
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User saveNew(@Valid @RequestBody User user) {
-        return userService.saveNew(user);
+    public UserDto save(@Valid @RequestBody UserDto user) {
+        return userService.save(user);
     }
 
     @GetMapping
@@ -37,12 +40,12 @@ public class UserController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeById(@PathVariable int id) {
-        userService.removeById(id);
+        userService.deleteById(id);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User updateById(@PathVariable int id,
+    public UserDto updateById(@PathVariable int id,
                            @RequestBody User user) {
         return userService.updateById(id, user);
     }
