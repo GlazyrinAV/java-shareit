@@ -13,7 +13,8 @@ import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
 import ru.practicum.shareit.exceptions.exceptions.WrongOwner;
 import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
 import ru.practicum.shareit.item.dto.*;
-import ru.practicum.shareit.user.UserServiceImpl;
+import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,25 +28,24 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
-    private final UserServiceImpl userService;
+    private final UserRepository userRepository;
     private final ItemMapper itemMapper;
-    private final ItemMapperWithTime itemMapperWithTime;
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
     @Override
-    public ItemDto save(int ownerID, ItemDto itemDto) {
-        checkUserExistence(ownerID);
-        return itemMapper.toDto(itemRepository.save(itemMapper.fromDto(ownerID, itemDto)));
+    public ItemDto save(int ownerId, ItemDto itemDto) {
+        User user = userRepository.findById(ownerId).orElseThrow(() -> new UserNotFound(ownerId));
+        return itemMapper.toDto(itemRepository.save(itemMapper.fromDto(user, itemDto)));
     }
 
     @Override
     public Collection<ItemDtoWithTime> findAllByUserId(Integer ownerId) {
-        checkUserExistence(ownerId);
+        userRepository.findById(ownerId).orElseThrow(() -> new UserNotFound(ownerId));
         Collection<ItemDtoWithTime> items = itemRepository.findAllWhereOwnerIdIn(ownerId).stream()
-                .map(itemMapperWithTime::toDtoWithTime)
+                .map(itemMapper::toDtoWithTime)
                 .collect(Collectors.toList());
         for (ItemDtoWithTime item : items) {
             Booking nextBooking = bookingRepository.findFirstByItem_IdAndStartAfterAndStatusOrderByStart(item.getId(), LocalDateTime.now(), BookingStatus.APPROVED);
@@ -62,25 +62,22 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDtoWithTime findById(int id, int ownerId) {
-        Optional<Item> item = itemRepository.findById(id);
-        checkItemExistence(item, id);
-        ItemDtoWithTime itemDtoWithTime = itemMapperWithTime.toDtoWithTime(item.get());
-        Collection<CommentDto> comments = commentRepository.findByItem_Id(id).stream()
-                .map(commentMapper::toDto)
-                .collect(Collectors.toList());
+        Item item = itemRepository.findById(id).orElseThrow(() -> new ItemNotFound(id));
+        ItemDtoWithTime itemDtoWithTime = itemMapper.toDtoWithTime(item);
+        Collection<CommentDto> comments = commentMapper.toDto(commentRepository.findByItem_Id(id));
         if (!comments.isEmpty()) {
             itemDtoWithTime.setComments(comments);
         } else {
             itemDtoWithTime.setComments(new ArrayList<>());
         }
-        if (item.get().getOwner().getId() != ownerId) {
+        if (item.getOwner().getId() != ownerId) {
             return itemDtoWithTime;
         }
-        Booking nextBooking = bookingRepository.findFirstByItem_IdAndStartAfterAndStatusOrderByStart(item.get().getId(), LocalDateTime.now(), BookingStatus.APPROVED);
+        Booking nextBooking = bookingRepository.findFirstByItem_IdAndStartAfterAndStatusOrderByStart(item.getId(), LocalDateTime.now(), BookingStatus.APPROVED);
         if (nextBooking != null) {
             itemDtoWithTime.setNextBooking(bookingMapper.toDtoShort(nextBooking));
         }
-        Booking lastBooking = bookingRepository.findFirstByItem_IdAndStartBeforeAndStatusOrderByEndDesc(item.get().getId(), LocalDateTime.now(), BookingStatus.APPROVED);
+        Booking lastBooking = bookingRepository.findFirstByItem_IdAndStartBeforeAndStatusOrderByEndDesc(item.getId(), LocalDateTime.now(), BookingStatus.APPROVED);
         if (lastBooking != null) {
             itemDtoWithTime.setLastBooking(bookingMapper.toDtoShort(lastBooking));
         }
@@ -89,13 +86,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Collection<ItemDto> findByName(String text) {
-        Collection<ItemDto> dtoList = new ArrayList<>();
-        if (text != null && !text.isBlank()) {
-            dtoList = itemRepository.findByName(text).stream()
-                    .map(itemMapper::toDto)
-                    .collect(Collectors.toList());
+        if (text == null || text.isBlank()) {
+            return new ArrayList<>();
         }
-        return dtoList;
+        return itemMapper.toDto(itemRepository.findByName(text));
     }
 
     @Override
@@ -105,22 +99,19 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto updateById(int ownerID, int itemId, ItemDto itemDto) {
-        checkUserExistence(ownerID);
-        Optional<Item> item = itemRepository.findById(itemId);
-        checkItemExistence(item, itemId);
-        if (item.get().getOwner().getId() != ownerID) {
+        userRepository.findById(ownerID).orElseThrow(() -> new UserNotFound(ownerID));
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFound(itemId));
+        if (item.getOwner().getId() != ownerID) {
             throw new WrongOwner("Указанный пользователь не является собственником вещи.");
         }
-        if (itemDto.getName() != null && !itemDto.getName().isBlank()) {
-            item.get().setName(itemDto.getName());
-        }
-        if (itemDto.getDescription() != null && !itemDto.getDescription().isBlank()) {
-            item.get().setDescription(itemDto.getDescription());
-        }
-        if (itemDto.getAvailable() != null) {
-            item.get().setAvailable(itemDto.getAvailable());
-        }
-        return itemMapper.toDto(itemRepository.save(item.get()));
+        Optional.ofNullable(itemDto.getName()).ifPresent(name -> {
+            if (!name.isBlank()) item.setName(name);
+        });
+        Optional.ofNullable(itemDto.getDescription()).ifPresent(desc -> {
+            if (!desc.isBlank()) item.setDescription(desc);
+        });
+        Optional.ofNullable(itemDto.getAvailable()).ifPresent(item::setAvailable);
+        return itemMapper.toDto(itemRepository.save(item));
     }
 
     @Override
@@ -130,27 +121,14 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public CommentDto saveComment(int userId, int itemId, CommentDto dto) {
-        checkUserExistence(userId);
-        Optional<Item> item = itemRepository.findById(itemId);
-        checkItemExistence(item, itemId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFound(userId));
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFound(itemId));
         if (!isAvailableForComments(userId, itemId)) {
             throw new WrongParameter("Данный пользователь не может оставлять отзыв данной вещи.");
         }
-        Comment newComment = commentMapper.fromDto(dto, userId, itemId);
+        Comment newComment = commentMapper.fromDto(dto, user, item);
         newComment.setCreated(LocalDateTime.now());
         return commentMapper.toDto(commentRepository.save(newComment));
-    }
-
-    private void checkUserExistence(int userId) {
-        if (!userService.isExists(userId)) {
-            throw new UserNotFound("Пользователь с ID " + userId + " не найден.");
-        }
-    }
-
-    private void checkItemExistence(Optional<Item> item, int itemId) {
-        if (item.isEmpty()) {
-            throw new ItemNotFound("Предмет с ID " + itemId + " не найден.");
-        }
     }
 
     private boolean isAvailableForComments(int userId, int itemId) {

@@ -6,4 +6,8 @@ public class ItemNotFound extends RuntimeException {
         super(msg);
     }
 
+    public ItemNotFound(int itemId) {
+        super("Предмет с ID " + itemId + " не найден.");
+    }
+
 }

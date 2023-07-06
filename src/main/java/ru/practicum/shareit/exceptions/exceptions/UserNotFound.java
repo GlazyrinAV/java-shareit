@@ -6,4 +6,8 @@ public class UserNotFound extends RuntimeException {
         super(msg);
     }
 
+    public UserNotFound(int userId) {
+        super("Пользователь с ID " + userId + " не найден.");
+    }
+
 }

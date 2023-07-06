@@ -31,12 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(int id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return user.get();
-        } else {
-            throw new UserNotFound("Пользователь с ID " + id + " не найден.");
-        }
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFound(id));
     }
 
     @Override
@@ -46,23 +41,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateById(int id, User user) {
-        Optional<User> userFromDB = userRepository.findById(id);
-        if (userFromDB.isEmpty()) {
-            throw new UserNotFound("Пользователь с ID " + id + " не найден.");
-        }
-
-        if (user.getName() != null && !user.getName().isEmpty()) {
-            userFromDB.get().setName(user.getName());
-        }
-        if (user.getEmail() != null && !user.getEmail().isEmpty()) {
-            userFromDB.get().setEmail(user.getEmail());
-        }
-        return userMapper.toDto(userRepository.save(userFromDB.get()));
-    }
-
-    @Override
-    public boolean isExists(int userId) {
-        return userRepository.existsById(userId);
+        User userFromDB = userRepository.findById(id).orElseThrow(() -> new UserNotFound(id));
+        Optional.ofNullable(user.getName()).ifPresent(name -> {
+            if (!name.isBlank()) userFromDB.setName(name);
+        });
+        Optional.ofNullable(user.getEmail()).ifPresent(email -> {
+            if (!email.isBlank()) userFromDB.setEmail(email);
+        });
+        return userMapper.toDto(userRepository.save(userFromDB));
     }
 
 }

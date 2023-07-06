@@ -16,6 +16,4 @@ public interface UserService {
 
     UserDto updateById(int id, User user);
 
-    boolean isExists(int userId);
-
 }

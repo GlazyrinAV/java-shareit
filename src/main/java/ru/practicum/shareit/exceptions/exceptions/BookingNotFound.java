@@ -6,4 +6,8 @@ public class BookingNotFound extends RuntimeException {
         super(msg);
     }
 
+    public BookingNotFound(int bookingId) {
+        super("Бронь с ID " + bookingId + " не найдена.");
+    }
+
 }

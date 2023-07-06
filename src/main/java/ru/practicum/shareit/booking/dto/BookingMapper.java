@@ -7,11 +7,10 @@ import ru.practicum.shareit.exceptions.exceptions.ItemNotFound;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.dto.ItemMapper;
-import ru.practicum.shareit.user.UserService;
+import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dto.UserMapper;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -22,18 +21,13 @@ public class BookingMapper {
 
     private final ItemMapper itemMapper;
 
-    private final UserService userService;
-
     private final UserMapper userMapper;
 
-    public Booking fromDto(NewBookingDto dto, int userId) {
-        Optional<Item> item = itemRepository.findById(dto.getItemId());
-        if (item.isEmpty()) {
-            throw new ItemNotFound("Предмет с ID " + dto.getItemId() + " не найден.");
-        }
+    public Booking fromDto(NewBookingDto dto, User user) {
+        Item item = itemRepository.findById(dto.getItemId()).orElseThrow(() -> new ItemNotFound(dto.getItemId()));
         return Booking.builder()
-                .booker(userService.findById(userId))
-                .item(item.get())
+                .booker(user)
+                .item(item)
                 .start(dto.getStart())
                 .end(dto.getEnd())
                 .build();

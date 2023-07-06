@@ -7,12 +7,12 @@ import java.util.Collection;
 
 public interface ItemRepository extends JpaRepository<Item, Integer> {
 
-    @Query("select it from Item it where it.owner.id in ?1")
+    @Query("from Item it where it.owner.id in :ownerId")
     Collection<Item> findAllWhereOwnerIdIn(Integer ownerId);
 
-    @Query("select it from Item it where it.available = TRUE and " +
-            "(lower(it.name) like lower(concat('%', ?1, '%')) or " +
-            "lower(it.description) like lower(concat('%', ?1, '%'))) ")
+    @Query("from Item it where it.available = TRUE and " +
+            "(lower(it.name) like lower(concat('%', :text, '%')) or " +
+            "lower(it.description) like lower(concat('%', :text, '%'))) ")
     Collection<Item> findByName(String text);
 
 }
