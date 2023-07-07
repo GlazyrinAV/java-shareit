@@ -62,13 +62,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDtoWithTime findById(int id, int ownerId) {
         Item item = itemRepository.findById(id).orElseThrow(() -> new ItemNotFound(id));
-        ItemDtoWithTime itemDtoWithTime = itemMapper.toDtoWithTime(item);
-        Collection<CommentDto> comments = commentMapper.toDto(commentRepository.findByItem_Id(id));
-        if (!comments.isEmpty()) {
-            itemDtoWithTime.setComments(comments);
-        } else {
-            itemDtoWithTime.setComments(new ArrayList<>());
-        }
+        ItemDtoWithTime itemDtoWithTime = itemMapper.toDtoWithTimeWithComments(item);
         if (item.getOwner().getId() != ownerId) {
             return itemDtoWithTime;
         }

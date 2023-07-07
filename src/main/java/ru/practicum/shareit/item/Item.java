@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Data
 @Builder
@@ -33,5 +34,9 @@ public class Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private User owner;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ITEM_ID")
+    private Collection<Comment> comments;
 
 }

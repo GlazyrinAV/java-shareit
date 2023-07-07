@@ -5,12 +5,15 @@ import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class ItemMapper {
+
+    private final CommentMapper commentMapper;
 
     public Item fromDto(User user, ItemDto itemDto) {
         return Item.builder()
@@ -42,6 +45,17 @@ public class ItemMapper {
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable())
+                .comments(new ArrayList<>())
+                .build();
+    }
+
+    public ItemDtoWithTime toDtoWithTimeWithComments(Item item) {
+        return ItemDtoWithTime.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .available(item.getAvailable())
+                .comments(commentMapper.toDto(item.getComments()))
                 .build();
     }
 
