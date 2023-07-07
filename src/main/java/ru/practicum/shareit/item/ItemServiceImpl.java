@@ -132,13 +132,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private boolean isAvailableForComments(int userId, int itemId) {
-        Collection<BookingDto> bookings = bookingMapper.toDto(bookingRepository.findByBooker_IdAndEndBeforeOrderByStartDesc(userId, LocalDateTime.now()));
-        for (BookingDto booking : bookings) {
-            if (booking.getItem().getId() == itemId) {
-                return true;
-            }
-        }
-        return false;
+        return bookingRepository.existsByBooker_IdAndItem_IdAndEndBeforeOrderByStartDesc(userId, itemId, LocalDateTime.now());
     }
 
 }
