@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "ITEM", schema = "public")
+@Table(name = "ITEM", schema = "PUBLIC")
 public class Item {
 
     @Id
@@ -35,8 +36,12 @@ public class Item {
     @JoinColumn(name = "owner_id")
     private User owner;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "ITEM_ID")
     private Collection<Comment> comments;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID")
+    private ItemRequest itemRequest;
 
 }

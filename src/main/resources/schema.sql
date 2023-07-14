@@ -58,3 +58,16 @@ create table if not exists PUBLIC."COMMENTS"
     constraint COMMENTS_ITEM_ID_FK
         foreign key (ITEM_ID) references PUBLIC.ITEM
 );
+
+DROP TABLE IF EXISTS PUBLIC.REQUEST;
+
+create table IF NOT EXISTS PUBLIC.REQUEST
+(
+    ID          INTEGER auto_increment,
+    OWNER_ID    INTEGER           not null,
+    DESCRIPTION CHARACTER VARYING not null,
+    CREATED     TIMESTAMP         not null,
+    ITEM_ID     INTEGER,
+    constraint "REQUEST_PK"
+        primary key (ID)
+);
