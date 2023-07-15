@@ -31,15 +31,17 @@ public class ItemRequestController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemRequestDto> findAllByUserId(@RequestParam Integer start,
-                                                      @RequestParam Integer end) {
-        return requestService.findAllByUserId(start, end);
+    public Collection<ItemRequestDto> findAllByUserId(@RequestHeader(Constants.OWNER_HEADER) int userId,
+                                                      @RequestParam(required = false) Integer from,
+                                                      @RequestParam(required = false) Integer size) {
+        return requestService.findOthersRequests(userId, from, size);
     }
 
     @GetMapping("/{requestId}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemRequestDto findById(@PathVariable Integer requestId) {
-        return requestService.findById(requestId);
+    public ItemRequestDto findById(@RequestHeader(Constants.OWNER_HEADER) int userId,
+                                   @PathVariable Integer requestId) {
+        return requestService.findById(userId, requestId);
     }
 
 }

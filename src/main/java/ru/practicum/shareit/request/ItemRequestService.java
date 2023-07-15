@@ -10,8 +10,8 @@ public interface ItemRequestService {
 
     Collection<ItemRequestDto> findAll(int ownerId);
 
-    Collection<ItemRequestDto> findAllByUserId(Integer start, Integer end);
+    Collection<ItemRequestDto> findOthersRequests(int userId, Integer start, Integer size);
 
-    ItemRequestDto findById(Integer requestId);
+    ItemRequestDto findById(int userId, int requestId);
 
 }

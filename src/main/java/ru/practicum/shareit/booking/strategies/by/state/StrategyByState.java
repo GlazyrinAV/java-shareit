@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface StrategyByState {
 
-    Collection<BookingDto> findByBookingState(int userId);
+    Collection<BookingDto> findByBookingState(int userId, Integer from, Integer size);
 
     BookingState getBookingState();
 

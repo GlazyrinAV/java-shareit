@@ -6,15 +6,12 @@ import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class ItemMapper {
-
-    private final CommentMapper commentMapper;
 
     public Item fromDto(User user, ItemDto itemDto) {
         return Item.builder()
@@ -60,7 +57,6 @@ public class ItemMapper {
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable())
-                .comments(new ArrayList<>())
                 .build();
         if (item.getItemRequest() != null) {
             dto.setRequestId(item.getItemRequest().getId());
@@ -68,18 +64,10 @@ public class ItemMapper {
         return dto;
     }
 
-    public ItemDtoWithTime toDtoWithTimeWithComments(Item item) {
-        ItemDtoWithTime dto = ItemDtoWithTime.builder()
-                .id(item.getId())
-                .name(item.getName())
-                .description(item.getDescription())
-                .available(item.getAvailable())
-                .comments(commentMapper.toDto(item.getComments()))
-                .build();
-        if (item.getItemRequest() != null) {
-            dto.setRequestId(item.getItemRequest().getId());
-        }
-        return dto;
+    public Collection<ItemDtoWithTime> toDtoWithTime(Collection<Item> items) {
+        return items.stream()
+                .map(this::toDtoWithTime)
+                .collect(Collectors.toList());
     }
 
 }

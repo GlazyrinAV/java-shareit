@@ -25,8 +25,8 @@ public class ItemRequest {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID")
-    private User ownerId;
+    @JoinColumn(name = "OWNER_ID")
+    private User owner;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -35,7 +35,7 @@ public class ItemRequest {
     private LocalDateTime created;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID")
+    @JoinColumn(name = "REQUEST_ID")
     private Collection<Item> items;
 
 }

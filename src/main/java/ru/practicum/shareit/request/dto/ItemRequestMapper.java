@@ -2,7 +2,7 @@ package ru.practicum.shareit.request.dto;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
@@ -17,20 +17,26 @@ public class ItemRequestMapper {
 
     private final ItemMapper itemMapper;
 
-    public ItemRequest fromDto(User user, ItemDto dto) {
+    public ItemRequest fromDto(User user, ItemRequestDto dto) {
         return ItemRequest.builder()
-                .ownerId(user)
+                .owner(user)
                 .description(dto.getDescription())
+                .created(LocalDateTime.now())
                 .build();
+
     }
 
     public ItemRequestDto toDto(ItemRequest request) {
-        return ItemRequestDto.builder()
+        ItemRequestDto dto = ItemRequestDto.builder()
                 .id(request.getId())
                 .description(request.getDescription())
                 .created(request.getCreated())
-                .items(itemMapper.toDto(request.getItems()))
                 .build();
+        Collection<Item> items = request.getItems();
+        if (items != null) {
+            dto.setItems(itemMapper.toDto(items));
+        }
+        return dto;
     }
 
     public Collection<ItemRequestDto> toDto(Collection<ItemRequest> requests) {

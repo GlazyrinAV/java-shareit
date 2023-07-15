@@ -10,11 +10,11 @@ public interface ItemService {
 
     ItemDto save(int ownerID, ItemDto itemDto);
 
-    Collection<ItemDtoWithTime> findAllByUserId(Integer ownerId);
+    Collection<ItemDtoWithTime> findAllByUserId(Integer ownerId, Integer from, Integer size);
 
     ItemDtoWithTime findById(int id, int ownerId);
 
-    Collection<ItemDto> findByName(String text);
+    Collection<ItemDto> findByName(String text, Integer from, Integer size);
 
     void deleteById(int id);
 
