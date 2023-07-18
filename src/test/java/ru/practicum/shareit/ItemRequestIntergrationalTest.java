@@ -19,7 +19,7 @@ import java.util.List;
 @Sql(value = {"/schema.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = "/testData.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Transactional
-class RequestItemIntergrationalTest {
+class ItemRequestIntergrationalTest {
 
     private final ItemRequestService itemRequestService;
 
