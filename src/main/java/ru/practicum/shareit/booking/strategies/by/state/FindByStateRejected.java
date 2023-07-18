@@ -28,7 +28,7 @@ public class FindByStateRejected implements StrategyByState {
         if (from < 0 || size < 1) {
             throw new WrongParameter("Указаны неправильные параметры.");
         }
-        Pageable page = PageRequest.of(from == 0 ? 0 : from/size, size);
+        Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size);
         return bookingMapper.toDto(bookingRepository.findByBooker_IdAndStatusEqualsOrderByStartDesc(userId, BookingStatus.REJECTED, page).getContent());
     }
 

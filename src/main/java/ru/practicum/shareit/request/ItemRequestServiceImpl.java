@@ -50,7 +50,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         if (from < 0 || size < 1) {
             throw new WrongParameter("Указаны неправильные параметры.");
         }
-        Pageable page = PageRequest.of(from == 0 ? 0 : from/size, size);
+        Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size);
         Collection<ItemRequest> requests = repository.findOthersRequests(userId, page).getContent();
         if (requests.isEmpty()) {
             return new ArrayList<>();

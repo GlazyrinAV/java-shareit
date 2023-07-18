@@ -56,7 +56,7 @@ public class ItemServiceImpl implements ItemService {
             if (from < 0 || size < 1) {
                 throw new WrongParameter("Указаны неправильные параметры.");
             }
-            Pageable page = PageRequest.of(from == 0 ? 0 : from/size, size);
+            Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size);
             items = itemMapper.toDtoWithTime(itemRepository.findAllWhereOwnerIdIn(ownerId, page).getContent());
         }
         for (ItemDtoWithTime item : items) {
@@ -107,7 +107,7 @@ public class ItemServiceImpl implements ItemService {
         if (from < 0 || size < 1) {
             throw new WrongParameter("Указаны неправильные параметры.");
         }
-        Pageable page = PageRequest.of(from == 0 ? 0 : from/size, size);
+        Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size);
         return itemMapper.toDto(itemRepository.findByName(text, page).getContent());
     }
 
