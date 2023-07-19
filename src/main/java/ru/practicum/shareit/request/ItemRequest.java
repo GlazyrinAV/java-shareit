@@ -1,9 +1,6 @@
 package ru.practicum.shareit.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
 
@@ -17,6 +14,8 @@ import java.util.Collection;
 @NoArgsConstructor
 @Entity
 @Table(name = "REQUEST", schema = "PUBLIC")
+@ToString(exclude = {"items"})
+@EqualsAndHashCode(exclude = {"owner", "description", "created", "items"})
 public class ItemRequest {
 
     @Id

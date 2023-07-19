@@ -1,9 +1,6 @@
 package ru.practicum.shareit.booking;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
 
@@ -16,6 +13,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "BOOKING", schema = "PUBLIC")
+@ToString(exclude = {"item", "booker"})
+@EqualsAndHashCode(exclude = {"item", "booker", "status", "start", "end"})
 public class Booking {
 
     @Id
