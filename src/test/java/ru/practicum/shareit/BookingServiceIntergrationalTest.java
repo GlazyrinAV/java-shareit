@@ -9,6 +9,7 @@ import org.springframework.test.context.jdbc.Sql;
 import ru.practicum.shareit.booking.BookingService;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.booking.dto.NewBookingDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.dto.UserDto;
 
@@ -235,6 +236,35 @@ class BookingServiceIntergrationalTest {
     @Test
     void findByStateWaitingWithoutPage() {
         Assertions.assertEquals(List.of(), bookingService.findByState("WAITING", 1, null, 1));
+    }
+
+    @Test
+    void save() {
+        ItemDto itemDto1 = ItemDto.builder()
+                .id(1)
+                .name("Item1")
+                .description("description1")
+                .available(true)
+                .build();
+        UserDto userDto = UserDto.builder()
+                .id(3)
+                .name("User3")
+                .email("email3@email.com")
+                .build();
+        NewBookingDto fromDto = NewBookingDto.builder()
+                .itemId(1)
+                .start(LocalDateTime.of(2023, 12, 18, 9, 0))
+                .end(LocalDateTime.of(2023, 12, 20, 9, 0))
+                .build();
+        BookingDto dto7 = BookingDto.builder()
+                .id(7)
+                .item(itemDto1)
+                .booker(userDto)
+                .status(BookingStatus.WAITING)
+                .start(LocalDateTime.of(2023, 12, 18, 9, 0))
+                .end(LocalDateTime.of(2023, 12, 20, 9, 0))
+                .build();
+        Assertions.assertEquals(dto7, bookingService.save(fromDto, 3));
     }
 
 }

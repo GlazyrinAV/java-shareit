@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
+import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.request.ItemRequestService;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 
@@ -51,6 +52,20 @@ class ItemRequestIntergrationalTest {
                 .build();
         Assertions.assertEquals(List.of(dto2, dto1), itemRequestService.findOthersRequests(2, null, 1),
                 "Ошибка при поиске запросов от других пользователей без пагинации.");
+    }
+
+    @Test
+    void save() {
+        ItemRequestDto fromDto = ItemRequestDto.builder()
+                .description("description4")
+                .build();
+        ItemRequestDto request = itemRequestService.save(fromDto, 3);
+        ItemRequestDto dto = ItemRequestDto.builder()
+                .id(4)
+                .description("description4")
+                .created(request.getCreated())
+                .build();
+        Assertions.assertEquals(dto, request);
     }
 
 }

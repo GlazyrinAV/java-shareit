@@ -86,6 +86,8 @@ class BookingMvcTests {
                 .andExpect(jsonPath("$.item.available", is(bookingDto.getItem().getAvailable())));
     }
 
+
+
     @Test
     void update() throws Exception {
         UserDto userDto = UserDto.builder()
@@ -252,5 +254,7 @@ class BookingMvcTests {
                 .andExpect(jsonPath("$.[0].item.description", is(bookings.get(0).getItem().getDescription())))
                 .andExpect(jsonPath("$.[0].item.available", is(bookings.get(0).getItem().getAvailable())));
     }
+
+
 
 }

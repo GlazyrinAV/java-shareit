@@ -16,6 +16,7 @@ import ru.practicum.shareit.booking.strategies.by.state.StrategyByStateFactory;
 import ru.practicum.shareit.exceptions.exceptions.BookingNotFound;
 import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
 import ru.practicum.shareit.exceptions.exceptions.WrongEnumParameter;
+import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -100,6 +101,54 @@ class BookingServiceTests {
                 .thenReturn(bookingDto);
         Assertions.assertEquals(bookingDto, bookingService.save(newBookingDto, 1),
                 "Ошибка при нормальном сохранении нового бронирования.");
+    }
+
+    @Test
+    void saveNormalByOwner() {
+        User user = new User(1, "User1", "email@email.com");
+        User owner = new User(2, "User2", "email2@email.com");
+        Item item = new Item(1, "Item1", "description", true, owner, null);
+        NewBookingDto newBookingDto = NewBookingDto.builder()
+                .itemId(1)
+                .start(LocalDateTime.now().plusHours(1))
+                .end(LocalDateTime.now().plusHours(12))
+                .build();
+        Booking newBooking = new Booking(1, item, user, BookingStatus.WAITING, newBookingDto.getStart(), newBookingDto.getEnd());
+        Mockito
+                .when(mockBookingMapper.fromDto(Mockito.any(), Mockito.any()))
+                .thenReturn(newBooking);
+        Mockito
+                .when(mockUserRepository.findById(Mockito.anyInt()))
+                .thenReturn(Optional.of(user));
+        Mockito
+                .when(mockItemRepository.findById(Mockito.anyInt()))
+                .thenReturn(Optional.of(item));
+        UserNotFound exception = Assertions.assertThrows(UserNotFound.class, () -> bookingService.save(newBookingDto, 2));
+        Assertions.assertEquals("Собственник не может создавать запрос на свою вещь.", exception.getMessage());
+    }
+
+    @Test
+    void saveNormalItemUnavailable() {
+        User user = new User(1, "User1", "email@email.com");
+        User owner = new User(2, "User2", "email2@email.com");
+        Item item = new Item(1, "Item1", "description", false, owner, null);
+        NewBookingDto newBookingDto = NewBookingDto.builder()
+                .itemId(1)
+                .start(LocalDateTime.now().plusHours(1))
+                .end(LocalDateTime.now().plusHours(12))
+                .build();
+        Booking newBooking = new Booking(1, item, user, BookingStatus.WAITING, newBookingDto.getStart(), newBookingDto.getEnd());
+        Mockito
+                .when(mockBookingMapper.fromDto(Mockito.any(), Mockito.any()))
+                .thenReturn(newBooking);
+        Mockito
+                .when(mockUserRepository.findById(Mockito.anyInt()))
+                .thenReturn(Optional.of(user));
+        Mockito
+                .when(mockItemRepository.findById(Mockito.anyInt()))
+                .thenReturn(Optional.of(item));
+        WrongParameter exception = Assertions.assertThrows(WrongParameter.class, () -> bookingService.save(newBookingDto, 1));
+        Assertions.assertEquals("Предмет с ID 1 не доступен.", exception.getMessage());
     }
 
     @ParameterizedTest

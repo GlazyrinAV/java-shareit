@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import ru.practicum.shareit.booking.dto.BookingDtoShort;
+import ru.practicum.shareit.item.Comment;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoWithTime;
+import ru.practicum.shareit.user.User;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -25,7 +28,6 @@ class ItemIntergrationalTest {
     private final ItemService itemService;
 
     @Test
-
     void findByIdByOtherUser() {
         CommentDto commentDto = CommentDto.builder()
                 .id(1)
@@ -66,6 +68,57 @@ class ItemIntergrationalTest {
                 .build();
         Assertions.assertEquals(dto, itemService.findById(1, 1),
                 "Ошибка при поиске вещи собственником.");
+    }
+
+    @Test
+    void saveWithoutRequest() {
+        ItemDto fromDto = ItemDto.builder()
+                .name("Item5")
+                .description("description5")
+                .available(true)
+                .requestId(null)
+                .build();
+        ItemDto dto = ItemDto.builder()
+                .id(5)
+                .name(fromDto.getName())
+                .description(fromDto.getDescription())
+                .available(fromDto.getAvailable())
+                .requestId(null)
+                .build();
+        Assertions.assertEquals(dto, itemService.save(3, fromDto));
+    }
+
+    @Test
+    void saveWithRequest() {
+        ItemDto fromDto = ItemDto.builder()
+                .name("Item5")
+                .description("description5")
+                .available(true)
+                .requestId(3)
+                .build();
+        ItemDto dto = ItemDto.builder()
+                .id(5)
+                .name(fromDto.getName())
+                .description(fromDto.getDescription())
+                .available(fromDto.getAvailable())
+                .requestId(3)
+                .build();
+        Assertions.assertEquals(dto, itemService.save(3, fromDto));
+    }
+
+    @Test
+    void  saveComment() {
+        CommentDto fromDto = CommentDto.builder()
+                .text("text")
+                .build();
+        CommentDto comment = itemService.saveComment(2, 1, fromDto);
+        CommentDto commentDto = CommentDto.builder()
+                .id(2)
+                .text("text")
+                .created(comment.getCreated())
+                .authorName("User2")
+                .build();
+        Assertions.assertEquals(commentDto, comment);
     }
 
 }

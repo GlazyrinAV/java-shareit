@@ -14,6 +14,7 @@ import ru.practicum.shareit.booking.dto.BookingDtoShort;
 import ru.practicum.shareit.booking.dto.BookingMapper;
 import ru.practicum.shareit.exceptions.exceptions.ItemNotFound;
 import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
+import ru.practicum.shareit.exceptions.exceptions.WrongOwner;
 import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
 import ru.practicum.shareit.item.*;
 import ru.practicum.shareit.item.dto.*;
@@ -559,5 +560,21 @@ class ItemServiceTests {
         UserNotFound exception = Assertions.assertThrows(UserNotFound.class, () -> itemService.saveComment(userId, 1, commentDto));
         Assertions.assertEquals("Пользователь с ID " + userId + " не найден.", exception.getMessage(),
                 "Ошибка при сохранении комментария с неправильным указанием пользователя.");
+    }
+
+    @Test
+    void updateByIdWrongOwner() {
+        User owner = new User(2, "User2", "email2@email.com");
+        Item item1 = new Item(1, "Item1", "Description1", true, owner, null);
+        ItemDto toDto1 = ItemDto.builder()
+                .description("NewDescription")
+                .build();
+        Mockito
+                .when(mockUserRepository.findById(Mockito.anyInt()))
+                .thenReturn(Optional.of(owner));
+        Mockito
+                .when(mockItemRepository.findById(Mockito.anyInt()))
+                .thenReturn(Optional.of(item1));
+        WrongOwner exception = Assertions.assertThrows(WrongOwner.class, () -> itemService.updateById(1, 1, toDto1));
     }
 }
