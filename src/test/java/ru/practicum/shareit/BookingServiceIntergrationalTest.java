@@ -114,7 +114,15 @@ class BookingServiceIntergrationalTest {
                 .start(LocalDateTime.of(2021, 8, 18, 9, 0))
                 .end(LocalDateTime.of(2021, 9, 18, 9, 0))
                 .build();
-        Assertions.assertEquals(List.of(dto1, dto2, dto3, dto4, dto5), bookingService.findByOwner("PAST", 1, null, 1),
+        BookingDto dto6 = BookingDto.builder()
+                .id(6)
+                .item(itemDto1)
+                .booker(userDto2)
+                .status(BookingStatus.REJECTED)
+                .start(LocalDateTime.of(2020, 8, 18, 9, 0))
+                .end(LocalDateTime.of(2020, 9, 18, 9, 0))
+                .build();
+        Assertions.assertEquals(List.of(dto1, dto2, dto3, dto4, dto5, dto6), bookingService.findByOwner("PAST", 1, null, 1),
                 "Ошибка при поиске бронирования по создателю с пагинацией.");
     }
 
