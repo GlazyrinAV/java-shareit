@@ -10,6 +10,7 @@ import ru.practicum.shareit.booking.BookingService;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.NewBookingDto;
+import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.dto.UserDto;
 
@@ -266,5 +267,50 @@ class BookingServiceIntergrationalTest {
                 .build();
         Assertions.assertEquals(dto7, bookingService.save(fromDto, 3));
     }
+
+    @Test
+    void saveWrongStart() {
+        NewBookingDto fromDto = NewBookingDto.builder()
+                .itemId(1)
+                .start(LocalDateTime.of(2024, 12, 18, 9, 0))
+                .end(LocalDateTime.of(2023, 12, 20, 9, 0))
+                .build();
+        WrongParameter exception = Assertions.assertThrows(WrongParameter.class, () -> bookingService.save(fromDto, 3));
+        Assertions.assertEquals("Конец не может быть раньше начала.", exception.getMessage());
+    }
+
+    @Test
+    void saveWrongEnd() {
+        NewBookingDto fromDto = NewBookingDto.builder()
+                .itemId(1)
+                .start(LocalDateTime.of(2024, 12, 18, 9, 0))
+                .end(LocalDateTime.of(2024, 12, 18, 9, 0))
+                .build();
+        WrongParameter exception = Assertions.assertThrows(WrongParameter.class, () -> bookingService.save(fromDto, 3));
+        Assertions.assertEquals("Конец не может быть равен началу.", exception.getMessage());
+    }
+
+    @Test
+    void saveWrongDuration() {
+        NewBookingDto fromDto = NewBookingDto.builder()
+                .itemId(1)
+                .start(LocalDateTime.of(1980, 12, 18, 9, 0))
+                .end(LocalDateTime.of(1981, 12, 18, 9, 0))
+                .build();
+        WrongParameter exception = Assertions.assertThrows(WrongParameter.class, () -> bookingService.save(fromDto, 3));
+        Assertions.assertEquals("Промежуток не может быть в прошлом.", exception.getMessage());
+    }
+
+    @Test
+    void saveWrongStartNull() {
+        NewBookingDto fromDto = NewBookingDto.builder()
+                .itemId(1)
+                .start(null)
+                .end(LocalDateTime.of(1981, 12, 18, 9, 0))
+                .build();
+        WrongParameter exception = Assertions.assertThrows(WrongParameter.class, () -> bookingService.save(fromDto, 3));
+        Assertions.assertEquals("Не указан временной промежуток.", exception.getMessage());
+    }
+
 
 }
