@@ -38,7 +38,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByBooker_IdEqualsOrderByStartDescWithPage() {
+    void findByBookerIdEqualsOrderByStartDescWithPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -50,7 +50,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByBooker_IdEqualsOrderByStartDescWithoutPage() {
+    void findByBookerIdEqualsOrderByStartDescWithoutPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -65,7 +65,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByBooker_IdAndStartAfterOrderByStartDescWithPage() {
+    void findByBookerIdAndStartAfterOrderByStartDescWithPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -77,7 +77,7 @@ class BookingJpaTests {
                 LocalDateTime.of(2022,10,20,9,0), page).getContent());
     }
     @Test
-    void findByBooker_IdAndStartAfterOrderByStartDescWithoutPage() {
+    void findByBookerIdAndStartAfterOrderByStartDescWithoutPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -89,7 +89,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByBooker_IdAndEndBeforeOrderByStartDescWithPage() {
+    void findByBookerIdAndEndBeforeOrderByStartDescWithPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item2 = new Item(2, "Item2", "description2", true, owner, null);
@@ -102,7 +102,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByBooker_IdAndEndBeforeOrderByStartDescWithoutPage() {
+    void findByBookerIdAndEndBeforeOrderByStartDescWithoutPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item2 = new Item(2, "Item2", "description2", true, owner, null);
@@ -114,7 +114,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByBooker_IdAndStartBeforeAndEndAfterOrderByStartDescWithPage() {
+    void findByBookerIdAndStartBeforeAndEndAfterOrderByStartDescWithPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -128,7 +128,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByBooker_IdAndStartBeforeAndEndAfterOrderByStartDescWithoutPage() {
+    void findByBookerIdAndStartBeforeAndEndAfterOrderByStartDescWithoutPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -145,7 +145,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByBooker_IdAndStatusEqualsOrderByStartDescWithPage() {
+    void findByBookerIdAndStatusEqualsOrderByStartDescWithPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -158,7 +158,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByBooker_IdAndStatusEqualsOrderByStartDescWithoutPage() {
+    void findByBookerIdAndStatusEqualsOrderByStartDescWithoutPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -174,7 +174,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByItem_Owner_IdOrderByStartDescWithPage() {
+    void findByItemOwnerIdOrderByStartDescWithPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -186,7 +186,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByItem_Owner_IdOrderByStartDescWithoutPage() {
+    void findByItemOwnerIdOrderByStartDescWithoutPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -214,7 +214,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByItem_Owner_IdAndStartAfterOrderByStartDescWithPage() {
+    void findByItemOwnerIdAndStartAfterOrderByStartDescWithPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -227,7 +227,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByItem_Owner_IdAndStartAfterOrderByStartDescWithoutPage() {
+    void findByItemOwnerIdAndStartAfterOrderByStartDescWithoutPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -239,7 +239,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByItem_Owner_IdAndEndBeforeOrderByStartDescWithPage() {
+    void findByItemOwnerIdAndEndBeforeOrderByStartDescWithPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -252,7 +252,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByItem_Owner_IdAndEndBeforeOrderByStartDescWithoutPage() {
+    void findByItemOwnerIdAndEndBeforeOrderByStartDescWithoutPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -270,7 +270,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByItem_Owner_IdAndStartBeforeAndEndAfterOrderByStartDescWithPage() {
+    void findByItemOwnerIdAndStartBeforeAndEndAfterOrderByStartDescWithPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -284,7 +284,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByItem_Owner_IdAndStartBeforeAndEndAfterOrderByStartDescWithoutPage() {
+    void findByItemOwnerIdAndStartBeforeAndEndAfterOrderByStartDescWithoutPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -301,7 +301,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByItem_Owner_IdAndStatusEqualsOrderByStartDescWithPage() {
+    void findByItemOwnerIdAndStatusEqualsOrderByStartDescWithPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -314,7 +314,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findByItem_Owner_IdAndStatusEqualsOrderByStartDescWithoutPage() {
+    void findByItemOwnerIdAndStatusEqualsOrderByStartDescWithoutPage() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -326,7 +326,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findFirstByItem_IdAndStartAfterAndStatusOrderByStart() {
+    void findFirstByItemIdAndStartAfterAndStatusOrderByStart() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -338,7 +338,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void findFirstByItem_IdAndStartBeforeAndStatusOrderByEndDesc() {
+    void findFirstByItemIdAndStartBeforeAndStatusOrderByEndDesc() {
         User owner = new User(1, "User1", "email1@email.com");
         User booker = new User(3, "User3", "email3@email.com");
         Item item1 = new Item(1, "Item1", "description1", true, owner, null);
@@ -350,7 +350,7 @@ class BookingJpaTests {
     }
 
     @Test
-    void existsByBooker_IdAndItem_IdAndEndBeforeOrderByStartDesc() {
+    void existsByBookerIdAndItemIdAndEndBeforeOrderByStartDesc() {
         Assertions.assertTrue(bookingRepository.existsByBooker_IdAndItem_IdAndEndBeforeOrderByStartDesc(2, 1,
                 LocalDateTime.of(2022,10,18,9,0)));
     }

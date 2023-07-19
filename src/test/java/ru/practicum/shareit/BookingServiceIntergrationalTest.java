@@ -26,7 +26,7 @@ class BookingServiceIntergrationalTest {
     private final BookingService bookingService;
 
     @Test
-    void findByOwnerWithPage() {
+    void findByOwnerAllWithPage() {
         ItemDto itemDto1 = ItemDto.builder()
                 .id(1)
                 .name("Item1")
@@ -49,6 +49,31 @@ class BookingServiceIntergrationalTest {
         Assertions.assertEquals(List.of(dto1), bookingService.findByOwner("ALL", 1, 0, 1),
                 "Ошибка при поиске бронирования по создателю с пагинацией.");
     }
+
+    @Test
+    void findByOwnerCurrentWithPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByOwner("CURRENT", 1, 0, 1));
+    }
+
+    @Test
+    void findByOwnerFutureWithPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByOwner("FUTURE", 1, 0, 1));
+    }
+    @Test
+    void findByOwnerPastWithPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByOwner("PAST", 2, 0, 1));
+    }
+
+    @Test
+    void findByOwnerRejectedWithPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByOwner("REJECTED", 2, 0, 1));
+    }
+
+    @Test
+    void findByOwnerWaitingWithPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByOwner("WAITING", 2, 0, 1));
+    }
+
 
     @Test
     void findByOwnerWithoutPage() {
@@ -124,6 +149,91 @@ class BookingServiceIntergrationalTest {
                 .build();
         Assertions.assertEquals(List.of(dto1, dto2, dto3, dto4, dto5, dto6), bookingService.findByOwner("PAST", 1, null, 1),
                 "Ошибка при поиске бронирования по создателю с пагинацией.");
+    }
+
+
+    @Test
+    void findByOwnerCurrentWithoutPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByOwner("CURRENT", 1, null, 1));
+    }
+
+    @Test
+    void findByOwnerFutureWithoutPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByOwner("FUTURE", 1, null, 1));
+    }
+    @Test
+    void findByOwnerPastWithoutPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByOwner("PAST", 2, null, 1));
+    }
+
+    @Test
+    void findByOwnerRejectedWithoutPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByOwner("REJECTED", 2, null, 1));
+    }
+
+    @Test
+    void findByOwnerWaitingWithoutPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByOwner("WAITING", 2, null, 1));
+    }
+
+    @Test
+    void findByStateAllWithPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByState("ALL", 1, 0, 1));
+    }
+
+    @Test
+    void findByStateCurrentWithPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByState("CURRENT", 2, 0, 1));
+    }
+
+    @Test
+    void findByStateFutureWithPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByState("FUTURE", 2, 0, 1));
+    }
+
+    @Test
+    void findByStatePastWithPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByState("PAST", 1, 0, 1));
+    }
+
+    @Test
+    void findByStateRejectedWithPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByState("REJECTED", 1, 0, 1));
+    }
+
+    @Test
+    void findByStateWaitingWithPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByState("WAITING", 1, 0, 1));
+    }
+
+    @Test
+    void findByStateAllWithoutPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByState("ALL", 1, null, 1));
+    }
+
+    @Test
+    void findByStateCurrentWithoutPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByState("CURRENT", 2, null, 1));
+    }
+
+    @Test
+    void findByStateFutureWithoutPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByState("FUTURE", 2, null, 1));
+    }
+
+    @Test
+    void findByStatePastWithoutPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByState("PAST", 1, null, 1));
+    }
+
+    @Test
+    void findByStateRejectedWithoutPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByState("REJECTED", 1, null, 1));
+    }
+
+    @Test
+    void findByStateWaitingWithoutPage() {
+        Assertions.assertEquals(List.of(), bookingService.findByState("WAITING", 1, null, 1));
     }
 
 }
