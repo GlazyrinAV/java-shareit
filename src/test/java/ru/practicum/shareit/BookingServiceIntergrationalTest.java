@@ -59,6 +59,7 @@ class BookingServiceIntergrationalTest {
     void findByOwnerFutureWithPage() {
         Assertions.assertEquals(List.of(), bookingService.findByOwner("FUTURE", 1, 0, 1));
     }
+
     @Test
     void findByOwnerPastWithPage() {
         Assertions.assertEquals(List.of(), bookingService.findByOwner("PAST", 2, 0, 1));
@@ -151,7 +152,6 @@ class BookingServiceIntergrationalTest {
                 "Ошибка при поиске бронирования по создателю с пагинацией.");
     }
 
-
     @Test
     void findByOwnerCurrentWithoutPage() {
         Assertions.assertEquals(List.of(), bookingService.findByOwner("CURRENT", 1, null, 1));
@@ -161,6 +161,7 @@ class BookingServiceIntergrationalTest {
     void findByOwnerFutureWithoutPage() {
         Assertions.assertEquals(List.of(), bookingService.findByOwner("FUTURE", 1, null, 1));
     }
+
     @Test
     void findByOwnerPastWithoutPage() {
         Assertions.assertEquals(List.of(), bookingService.findByOwner("PAST", 2, null, 1));

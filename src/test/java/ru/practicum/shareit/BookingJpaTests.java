@@ -76,6 +76,7 @@ class BookingJpaTests {
         Assertions.assertEquals(List.of(booking), bookingRepository.findByBooker_IdAndStartAfterOrderByStartDesc(3,
                 LocalDateTime.of(2022,10,20,9,0), page).getContent());
     }
+
     @Test
     void findByBookerIdAndStartAfterOrderByStartDescWithoutPage() {
         User owner = new User(1, "User1", "email1@email.com");
