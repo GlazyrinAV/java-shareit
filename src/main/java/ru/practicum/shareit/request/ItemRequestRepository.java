@@ -2,6 +2,7 @@ package ru.practicum.shareit.request;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,7 +13,7 @@ public interface ItemRequestRepository extends JpaRepository<ItemRequest, Intege
     @Query("FROM ItemRequest IR WHERE IR.owner.id IN :ownerId ORDER BY IR.created DESC")
     Collection<ItemRequest> findAll(int ownerId);
 
-    @Query("FROM ItemRequest IR WHERE IR.owner.id NOT IN :userId ORDER BY IR.created DESC")
+    @Query("FROM ItemRequest IR WHERE IR.owner.id NOT IN :userId ")
     Page<ItemRequest> findOthersRequests(int userId, Pageable pageable);
 
     @Query("FROM ItemRequest IR WHERE IR.owner.id NOT IN :userId ORDER BY IR.created DESC")

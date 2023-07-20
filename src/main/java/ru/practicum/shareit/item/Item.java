@@ -12,8 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "ITEM", schema = "PUBLIC")
-@ToString(exclude = {"owner", "itemRequest"})
-@EqualsAndHashCode(exclude = {"name", "description", "available", "owner", "itemRequest"})
+@EqualsAndHashCode(of = {"id"})
 public class Item {
 
     @Id

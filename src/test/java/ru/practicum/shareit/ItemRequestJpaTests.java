@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.jdbc.Sql;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.request.ItemRequest;
@@ -52,9 +53,8 @@ class ItemRequestJpaTests {
     @Test
     void findOthersRequestsWithPage() {
         User user2 = new User(3, "User3", "email3@email.com");
-        ItemRequest request2 = new ItemRequest(2, user2, "request_description2", LocalDateTime.of(2022,8, 20, 9, 0), null);
         ItemRequest request3 = new ItemRequest(3, user2, "request_description3", LocalDateTime.of(2022,8, 20, 9, 0), null);
-        Pageable page = PageRequest.of(0, 1);
+        Pageable page = PageRequest.of(0, 1, Sort.by("created").descending());
         Assertions.assertEquals(List.of(request3), itemRequestRepository.findOthersRequests(1, page).getContent());
     }
 

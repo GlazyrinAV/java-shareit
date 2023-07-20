@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "BOOKING", schema = "PUBLIC")
-@ToString(exclude = {"item", "booker"})
-@EqualsAndHashCode(exclude = {"item", "booker", "status", "start", "end"})
+@EqualsAndHashCode(of = {"id"})
 public class Booking {
 
     @Id

@@ -15,6 +15,7 @@ import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.request.ItemRequestRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.utils.PageCheck;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -101,11 +102,8 @@ public class ItemServiceImpl implements ItemService {
         if (text == null || text.isBlank()) {
             return new ArrayList<>();
         }
-        if (from == null || size == null) {
+        if (PageCheck.isWithoutPage(from, size)) {
             return itemMapper.toDto(itemRepository.findByName(text));
-        }
-        if (from < 0 || size < 1) {
-            throw new WrongParameter("Указаны неправильные параметры.");
         }
         Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size);
         return itemMapper.toDto(itemRepository.findByName(text, page).getContent());

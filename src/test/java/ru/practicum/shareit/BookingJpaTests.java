@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.jdbc.Sql;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingRepository;
@@ -45,8 +46,8 @@ class BookingJpaTests {
         Booking booking = new Booking(4, item1, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,12,18,9,0),
                 LocalDateTime.of(2022,12,20,9,0));
-        Pageable page = PageRequest.of(0, 1);
-        Assertions.assertEquals(List.of(booking), bookingRepository.findByBooker_IdEqualsOrderByStartDesc(3, page).getContent());
+        Pageable page = PageRequest.of(0, 1, Sort.by("start").descending());
+        Assertions.assertEquals(List.of(booking), bookingRepository.findByBooker_IdEquals(3, page).getContent());
     }
 
     @Test
@@ -61,7 +62,7 @@ class BookingJpaTests {
         Booking booking2 = new Booking(3, item2, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,10,18,9,0),
                 LocalDateTime.of(2022,11,18,9,0));
-        Assertions.assertEquals(List.of(booking1, booking2), bookingRepository.findByBooker_IdEqualsOrderByStartDesc(3));
+        Assertions.assertEquals(List.of(booking1, booking2), bookingRepository.findTop100ByBooker_IdEqualsOrderByStartDesc(3));
     }
 
     @Test
@@ -72,8 +73,8 @@ class BookingJpaTests {
         Booking booking = new Booking(4, item1, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,12,18,9,0),
                 LocalDateTime.of(2022,12,20,9,0));
-        Pageable page = PageRequest.of(0, 1);
-        Assertions.assertEquals(List.of(booking), bookingRepository.findByBooker_IdAndStartAfterOrderByStartDesc(3,
+        Pageable page = PageRequest.of(0, 1, Sort.by("start").descending());
+        Assertions.assertEquals(List.of(booking), bookingRepository.findByBooker_IdAndStartAfter(3,
                 LocalDateTime.of(2022,10,20,9,0), page).getContent());
     }
 
@@ -85,7 +86,7 @@ class BookingJpaTests {
         Booking booking = new Booking(4, item1, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,12,18,9,0),
                 LocalDateTime.of(2022,12,20,9,0));
-        Assertions.assertEquals(List.of(booking), bookingRepository.findByBooker_IdAndStartAfterOrderByStartDesc(3,
+        Assertions.assertEquals(List.of(booking), bookingRepository.findTop100ByBooker_IdAndStartAfterOrderByStartDesc(3,
                 LocalDateTime.of(2022,10,20,9,0)));
     }
 
@@ -97,8 +98,8 @@ class BookingJpaTests {
         Booking booking2 = new Booking(3, item2, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,10,18,9,0),
                 LocalDateTime.of(2022,11,18,9,0));
-        Pageable page = PageRequest.of(0, 1);
-        Assertions.assertEquals(List.of(booking2), bookingRepository.findByBooker_IdAndEndBeforeOrderByStartDesc(3,
+        Pageable page = PageRequest.of(0, 1, Sort.by("start").descending());
+        Assertions.assertEquals(List.of(booking2), bookingRepository.findByBooker_IdAndEndBefore(3,
                 LocalDateTime.of(2022,12,20,9,0), page).getContent());
     }
 
@@ -110,7 +111,7 @@ class BookingJpaTests {
         Booking booking2 = new Booking(3, item2, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,10,18,9,0),
                 LocalDateTime.of(2022,11,18,9,0));
-        Assertions.assertEquals(List.of(booking2), bookingRepository.findByBooker_IdAndEndBeforeOrderByStartDesc(3,
+        Assertions.assertEquals(List.of(booking2), bookingRepository.findTop100ByBooker_IdAndEndBeforeOrderByStartDesc(3,
                 LocalDateTime.of(2022,12,20,9,0)));
     }
 
@@ -122,8 +123,8 @@ class BookingJpaTests {
         Booking booking = new Booking(4, item1, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,12,18,9,0),
                 LocalDateTime.of(2022,12,20,9,0));
-        Pageable page = PageRequest.of(0, 1);
-        Assertions.assertEquals(List.of(booking), bookingRepository.findByBooker_IdAndStartBeforeAndEndAfterOrderByStartDesc(3,
+        Pageable page = PageRequest.of(0, 1, Sort.by("start").descending());
+        Assertions.assertEquals(List.of(booking), bookingRepository.findByBooker_IdAndStartBeforeAndEndAfter(3,
                 LocalDateTime.of(2022,12,20,9,0),
                 LocalDateTime.of(2022,10,20,9,0), page).getContent());
     }
@@ -140,7 +141,7 @@ class BookingJpaTests {
         Booking booking2 = new Booking(3, item2, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,10,18,9,0),
                 LocalDateTime.of(2022,11,18,9,0));
-        Assertions.assertEquals(List.of(booking, booking2), bookingRepository.findByBooker_IdAndStartBeforeAndEndAfterOrderByStartDesc(3,
+        Assertions.assertEquals(List.of(booking, booking2), bookingRepository.findTop100ByBooker_IdAndStartBeforeAndEndAfterOrderByStartDesc(3,
                 LocalDateTime.of(2022,12,20,9,0),
                 LocalDateTime.of(2022,10,20,9,0)));
     }
@@ -153,8 +154,8 @@ class BookingJpaTests {
         Booking booking = new Booking(4, item1, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,12,18,9,0),
                 LocalDateTime.of(2022,12,20,9,0));
-        Pageable page = PageRequest.of(0, 1);
-        Assertions.assertEquals(List.of(booking), bookingRepository.findByBooker_IdAndStatusEqualsOrderByStartDesc(3,
+        Pageable page = PageRequest.of(0, 1, Sort.by("start").descending());
+        Assertions.assertEquals(List.of(booking), bookingRepository.findByBooker_IdAndStatusEquals(3,
                 BookingStatus.WAITING, page).getContent());
     }
 
@@ -170,7 +171,7 @@ class BookingJpaTests {
         Booking booking2 = new Booking(3, item2, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,10,18,9,0),
                 LocalDateTime.of(2022,11,18,9,0));
-        Assertions.assertEquals(List.of(booking, booking2), bookingRepository.findByBooker_IdAndStatusEqualsOrderByStartDesc(3,
+        Assertions.assertEquals(List.of(booking, booking2), bookingRepository.findTop100ByBooker_IdAndStatusEqualsOrderByStartDesc(3,
                 BookingStatus.WAITING));
     }
 
@@ -182,8 +183,8 @@ class BookingJpaTests {
         Booking booking = new Booking(4, item1, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,12,18,9,0),
                 LocalDateTime.of(2022,12,20,9,0));
-        Pageable page = PageRequest.of(0, 1);
-        Assertions.assertEquals(List.of(booking), bookingRepository.findByItem_Owner_IdOrderByStartDesc(1, page).getContent());
+        Pageable page = PageRequest.of(0, 1, Sort.by("start").descending());
+        Assertions.assertEquals(List.of(booking), bookingRepository.findByItem_Owner_Id(1, page).getContent());
     }
 
     @Test
@@ -222,8 +223,8 @@ class BookingJpaTests {
         Booking booking1 = new Booking(4, item1, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,12,18,9,0),
                 LocalDateTime.of(2022,12,20,9,0));
-        Pageable page = PageRequest.of(0, 1);
-        Assertions.assertEquals(List.of(booking1), bookingRepository.findByItem_Owner_IdAndStartAfterOrderByStartDesc(1,
+        Pageable page = PageRequest.of(0, 1, Sort.by("start").descending());
+        Assertions.assertEquals(List.of(booking1), bookingRepository.findByItem_Owner_IdAndStartAfter(1,
                 LocalDateTime.of(2022,10,20,9,0), page).getContent());
     }
 
@@ -235,7 +236,7 @@ class BookingJpaTests {
         Booking booking1 = new Booking(4, item1, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,12,18,9,0),
                 LocalDateTime.of(2022,12,20,9,0));
-        Assertions.assertEquals(List.of(booking1), bookingRepository.findByItem_Owner_IdAndStartAfterOrderByStartDesc(1,
+        Assertions.assertEquals(List.of(booking1), bookingRepository.findTop100ByItem_Owner_IdAndStartAfterOrderByStartDesc(1,
                 LocalDateTime.of(2022,10,20,9,0)));
     }
 
@@ -247,8 +248,8 @@ class BookingJpaTests {
         Booking booking4 = new Booking(1, item1, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,8,18,9,0),
                 LocalDateTime.of(2022,9,18,9,0));
-        Pageable page = PageRequest.of(0, 1);
-        Assertions.assertEquals(List.of(booking4), bookingRepository.findByItem_Owner_IdAndEndBeforeOrderByStartDesc(1,
+        Pageable page = PageRequest.of(0, 1, Sort.by("start").descending());
+        Assertions.assertEquals(List.of(booking4), bookingRepository.findByItem_Owner_IdAndEndBefore(1,
                 LocalDateTime.of(2022,10,20,9,0), page).getContent());
     }
 
@@ -266,7 +267,7 @@ class BookingJpaTests {
         Booking booking6 = new Booking(6, item1, booker, BookingStatus.REJECTED,
                 LocalDateTime.of(2020,8,18,9,0),
                 LocalDateTime.of(2020,9,18,9,0));
-        Assertions.assertEquals(List.of(booking4, booking5, booking6), bookingRepository.findByItem_Owner_IdAndEndBeforeOrderByStartDesc(1,
+        Assertions.assertEquals(List.of(booking4, booking5, booking6), bookingRepository.findTop100ByItem_Owner_IdAndEndBeforeOrderByStartDesc(1,
                 LocalDateTime.of(2022,10,20,9,0)));
     }
 
@@ -278,8 +279,8 @@ class BookingJpaTests {
         Booking booking2 = new Booking(2, item1, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,10,18,9,0),
                 LocalDateTime.of(2022,11,18,9,0));
-        Pageable page = PageRequest.of(0, 1);
-        Assertions.assertEquals(List.of(booking2), bookingRepository.findByItem_Owner_IdAndStartBeforeAndEndAfterOrderByStartDesc(1,
+        Pageable page = PageRequest.of(0, 1, Sort.by("start").descending());
+        Assertions.assertEquals(List.of(booking2), bookingRepository.findByItem_Owner_IdAndStartBeforeAndEndAfter(1,
                 LocalDateTime.of(2022,11,20,9,0),
                 LocalDateTime.of(2022,10,20,9,0), page).getContent());
     }
@@ -296,7 +297,7 @@ class BookingJpaTests {
         Booking booking3 = new Booking(3, item2, booker, BookingStatus.WAITING,
                 LocalDateTime.of(2022,10,18,9,0),
                 LocalDateTime.of(2022,11,18,9,0));
-        Assertions.assertEquals(List.of(booking2, booking3), bookingRepository.findByItem_Owner_IdAndStartBeforeAndEndAfterOrderByStartDesc(1,
+        Assertions.assertEquals(List.of(booking2, booking3), bookingRepository.findTop100ByItem_Owner_IdAndStartBeforeAndEndAfterOrderByStartDesc(1,
                 LocalDateTime.of(2022,11,20,9,0),
                 LocalDateTime.of(2022,10,20,9,0)));
     }
@@ -309,8 +310,8 @@ class BookingJpaTests {
         Booking booking5 = new Booking(5, item1, booker, BookingStatus.APPROVED,
                 LocalDateTime.of(2021,8,18,9,0),
                 LocalDateTime.of(2021,9,18,9,0));
-        Pageable page = PageRequest.of(0, 1);
-        Assertions.assertEquals(List.of(booking5), bookingRepository.findByItem_Owner_IdAndStatusEqualsOrderByStartDesc(1,
+        Pageable page = PageRequest.of(0, 1, Sort.by("start").descending());
+        Assertions.assertEquals(List.of(booking5), bookingRepository.findByItem_Owner_IdAndStatusEquals(1,
                 BookingStatus.APPROVED, page).getContent());
     }
 
@@ -322,7 +323,7 @@ class BookingJpaTests {
         Booking booking5 = new Booking(5, item1, booker, BookingStatus.APPROVED,
                 LocalDateTime.of(2021,8,18,9,0),
                 LocalDateTime.of(2021,9,18,9,0));
-        Assertions.assertEquals(List.of(booking5), bookingRepository.findByItem_Owner_IdAndStatusEqualsOrderByStartDesc(1,
+        Assertions.assertEquals(List.of(booking5), bookingRepository.findTop100ByItem_Owner_IdAndStatusEqualsOrderByStartDesc(1,
                 BookingStatus.APPROVED));
     }
 

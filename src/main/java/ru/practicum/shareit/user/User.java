@@ -10,7 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "USERS", schema = "PUBLIC")
-@EqualsAndHashCode(exclude = {"name", "email"})
+@EqualsAndHashCode(of = {"id"})
 public class User {
 
     @Id

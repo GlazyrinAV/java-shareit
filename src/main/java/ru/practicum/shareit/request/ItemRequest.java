@@ -14,8 +14,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @Entity
 @Table(name = "REQUEST", schema = "PUBLIC")
-@ToString(exclude = {"items"})
-@EqualsAndHashCode(exclude = {"owner", "description", "created", "items"})
+@EqualsAndHashCode(of = {"id"})
 public class ItemRequest {
 
     @Id
