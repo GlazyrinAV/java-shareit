@@ -1,9 +1,6 @@
 package ru.practicum.shareit.booking;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
 
@@ -15,7 +12,8 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "BOOKING")
+@Table(name = "BOOKING", schema = "PUBLIC")
+@EqualsAndHashCode(of = {"id"})
 public class Booking {
 
     @Id
@@ -24,7 +22,7 @@ public class Booking {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "ITEM_ID")
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)

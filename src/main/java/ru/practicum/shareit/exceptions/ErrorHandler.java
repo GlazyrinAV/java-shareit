@@ -13,13 +13,7 @@ import ru.practicum.shareit.exceptions.exceptions.*;
 @Slf4j
 public class ErrorHandler {
 
-    @ExceptionHandler({UserAlreadyExists.class, ItemAlreadyExists.class})
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse entityAlreadyExists(RuntimeException exception) {
-        return sendErrorResponse(exception.getMessage());
-    }
-
-    @ExceptionHandler({UserNotFound.class, ItemNotFound.class, BookingNotFound.class})
+    @ExceptionHandler({UserNotFound.class, ItemNotFound.class, BookingNotFound.class, ItemRequestNotFound.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse entityNotFound(RuntimeException exception) {
         return sendErrorResponse(exception.getMessage());

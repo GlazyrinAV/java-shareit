@@ -2,25 +2,25 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.BookingStatus;
-import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingMapper;
-import ru.practicum.shareit.exceptions.exceptions.ItemNotFound;
-import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
-import ru.practicum.shareit.exceptions.exceptions.WrongOwner;
-import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
+import ru.practicum.shareit.exceptions.exceptions.*;
 import ru.practicum.shareit.item.dto.*;
+import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.request.ItemRequestRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.utils.PageCheck;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -34,19 +34,32 @@ public class ItemServiceImpl implements ItemService {
     private final BookingMapper bookingMapper;
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
+    private final ItemRequestRepository itemRequestRepository;
 
     @Override
     public ItemDto save(int ownerId, ItemDto itemDto) {
         User user = userRepository.findById(ownerId).orElseThrow(() -> new UserNotFound(ownerId));
+        if (itemDto.getRequestId() != null) {
+            ItemRequest request = itemRequestRepository.findById(itemDto.getRequestId())
+                    .orElseThrow(() -> new ItemRequestNotFound(itemDto.getRequestId()));
+            return itemMapper.toDto(itemRepository.save(itemMapper.fromDto(user, itemDto, request)));
+        }
         return itemMapper.toDto(itemRepository.save(itemMapper.fromDto(user, itemDto)));
     }
 
     @Override
-    public Collection<ItemDtoWithTime> findAllByUserId(Integer ownerId) {
+    public Collection<ItemDtoWithTime> findAllByUserId(Integer ownerId, Integer from, Integer size) {
         userRepository.findById(ownerId).orElseThrow(() -> new UserNotFound(ownerId));
-        Collection<ItemDtoWithTime> items = itemRepository.findAllWhereOwnerIdIn(ownerId).stream()
-                .map(itemMapper::toDtoWithTime)
-                .collect(Collectors.toList());
+        Collection<ItemDtoWithTime> items;
+        if (from == null || size == null) {
+            items = itemMapper.toDtoWithTime(itemRepository.findAllWhereOwnerIdIn(ownerId));
+        } else {
+            if (from < 0 || size < 1) {
+                throw new WrongParameter("Указаны неправильные параметры.");
+            }
+            Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size);
+            items = itemMapper.toDtoWithTime(itemRepository.findAllWhereOwnerIdIn(ownerId, page).getContent());
+        }
         for (ItemDtoWithTime item : items) {
             Booking nextBooking = bookingRepository.findFirstByItem_IdAndStartAfterAndStatusOrderByStart(item.getId(), LocalDateTime.now(), BookingStatus.APPROVED);
             if (nextBooking != null) {
@@ -85,11 +98,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Collection<ItemDto> findByName(String text) {
+    public Collection<ItemDto> findByName(String text, Integer from, Integer size) {
         if (text == null || text.isBlank()) {
             return new ArrayList<>();
         }
-        return itemMapper.toDto(itemRepository.findByName(text));
+        if (PageCheck.isWithoutPage(from, size)) {
+            return itemMapper.toDto(itemRepository.findByName(text));
+        }
+        Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size);
+        return itemMapper.toDto(itemRepository.findByName(text, page).getContent());
     }
 
     @Override
@@ -132,13 +149,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private boolean isAvailableForComments(int userId, int itemId) {
-        Collection<BookingDto> bookings = bookingMapper.toDto(bookingRepository.findByBooker_IdAndEndBeforeOrderByStartDesc(userId, LocalDateTime.now()));
-        for (BookingDto booking : bookings) {
-            if (booking.getItem().getId() == itemId) {
-                return true;
-            }
-        }
-        return false;
+        return bookingRepository.existsByBooker_IdAndItem_IdAndEndBeforeOrderByStartDesc(userId, itemId, LocalDateTime.now());
     }
 
 }
