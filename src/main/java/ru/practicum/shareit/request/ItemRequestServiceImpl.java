@@ -7,7 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.exceptions.ItemRequestNotFound;
 import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
-import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestMapper;
 import ru.practicum.shareit.user.User;
