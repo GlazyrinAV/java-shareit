@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
@@ -33,6 +34,7 @@ public class Comment {
     private String text;
 
     @Column(name = "CREATED")
+    @CreationTimestamp
     private LocalDateTime created;
 
 }

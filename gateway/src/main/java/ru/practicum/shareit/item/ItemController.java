@@ -11,7 +11,6 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.utils.Constants;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 

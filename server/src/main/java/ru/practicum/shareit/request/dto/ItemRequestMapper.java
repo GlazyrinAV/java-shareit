@@ -21,7 +21,6 @@ public class ItemRequestMapper {
         return ItemRequest.builder()
                 .owner(user)
                 .description(dto.getDescription())
-                .created(LocalDateTime.now())
                 .build();
 
     }

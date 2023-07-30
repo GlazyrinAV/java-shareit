@@ -1,6 +1,7 @@
 package ru.practicum.shareit.request;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
 
@@ -30,6 +31,7 @@ public class ItemRequest {
     private String description;
 
     @Column(name = "CREATED")
+    @CreationTimestamp
     private LocalDateTime created;
 
     @OneToMany(fetch = FetchType.LAZY)

@@ -144,12 +144,11 @@ public class ItemServiceImpl implements ItemService {
             throw new WrongParameter("Данный пользователь не может оставлять отзыв данной вещи.");
         }
         Comment newComment = commentMapper.fromDto(dto, user, item);
-        newComment.setCreated(LocalDateTime.now());
         return commentMapper.toDto(commentRepository.save(newComment));
     }
 
     private boolean isAvailableForComments(int userId, int itemId) {
-        return bookingRepository.existsByBooker_IdAndItem_IdAndEndBeforeOrderByStartDesc(userId, itemId, LocalDateTime.now());
+        return !bookingRepository.exists(userId, itemId, LocalDateTime.now()).isEmpty();
     }
 
 }

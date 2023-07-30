@@ -36,7 +36,7 @@ public class Booking {
     @Column(name = "start")
     private LocalDateTime start;
 
-    @Column(name = "finish")
+    @Column(name = "finish", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime end;
 
 }

@@ -3,6 +3,7 @@ package ru.practicum.shareit.booking;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -53,6 +54,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     Booking findFirstByItem_IdAndStartBeforeAndStatusOrderByEndDesc(int itemId, LocalDateTime time, BookingStatus status);
 
-    boolean existsByBooker_IdAndItem_IdAndEndBeforeOrderByStartDesc(int userId, int itemId, LocalDateTime time);
+    @Query("FROM Booking b WHERE b.booker.id in :userId and b.item.id in :itemId and b.end < :time")
+    Collection<Booking> exists(int userId, int itemId, LocalDateTime time);
 
 }

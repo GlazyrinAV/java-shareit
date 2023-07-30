@@ -1,28 +1,48 @@
 version: '3.8'
 services:
   gateway:
-    build:
-    image:
-    container_name:
+    build: .
+    image: shareit_gateway
+    container_name: shareit-gateway
     ports:
       - "8080:8080"
+      - "5082:5082"
     depends_on:
+      - server
     environment:
+      - DEBUG_SERVER_JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5082
       - SHAREIT_SERVER_URL=http://server:9090
 
   server:
-    build:
-    image:
-    container_name:
+    build: .
+    image: shareit_server
+    container_name: shareit-server
     ports:
       - "9090:9090"
+      - "5081:5081"
     depends_on:
+      - db
     environment:
+      - DEBUG_SERVER_JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5081
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shareit
 
   db:
-    image:
-    container_name:
+    image: postgres
+    container_name: shareit-db
+    environment:
+      - POSTGRES_DB=shareit
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
     ports:
       - "6541:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5080:80"
     environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=password
+      - PGADMIN_LISTEN_PORT=80
+    depends_on:
+      - db
