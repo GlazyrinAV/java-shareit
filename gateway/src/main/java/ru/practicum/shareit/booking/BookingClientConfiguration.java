@@ -13,12 +13,12 @@ public class BookingClientConfiguration {
     private String serverUrl;
 
     @Value("/bookings")
-    private String API_PREFIX;
+    private String api;
 
     @Bean
     public BookingClient bookingClient(RestTemplateBuilder builder) {
         var restTemplate = builder
-                .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
+                .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + api))
                 .build();
         return new BookingClient(restTemplate);
     }

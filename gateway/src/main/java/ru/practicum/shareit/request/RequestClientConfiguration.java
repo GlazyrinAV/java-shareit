@@ -13,12 +13,12 @@ public class RequestClientConfiguration {
     private String serverUrl;
 
     @Value("/requests")
-    private String API_PREFIX;
+    private String api;
 
     @Bean
     public RequestClient requestClient(RestTemplateBuilder builder) {
         var restTemplate = builder
-                .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
+                .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + api))
                 .build();
         return new RequestClient(restTemplate);
     }

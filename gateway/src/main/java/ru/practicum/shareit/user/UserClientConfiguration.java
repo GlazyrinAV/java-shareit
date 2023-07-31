@@ -13,12 +13,12 @@ public class UserClientConfiguration {
     private String serverUrl;
 
     @Value("/users")
-    private String API_PREFIX;
+    private String api;
 
     @Bean
     public UserClient userClient(RestTemplateBuilder builder) {
         var restTemplate = builder
-                .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
+                .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + api))
                 .build();
         return new UserClient(restTemplate);
     }

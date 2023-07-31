@@ -13,12 +13,12 @@ public class ItemClientConfiguration {
     private String serverUrl;
 
     @Value("/items")
-    private String API_PREFIX;
+    private String api;
 
     @Bean
     public ItemClient itemClient(RestTemplateBuilder builder) {
         var restTemplate = builder
-                .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
+                .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + api))
                 .build();
         return new ItemClient(restTemplate);
     }
