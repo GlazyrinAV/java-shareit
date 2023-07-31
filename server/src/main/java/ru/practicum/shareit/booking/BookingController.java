@@ -9,7 +9,6 @@ import ru.practicum.shareit.booking.dto.NewBookingDto;
 import ru.practicum.shareit.utils.Constants;
 
 import java.util.Collection;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

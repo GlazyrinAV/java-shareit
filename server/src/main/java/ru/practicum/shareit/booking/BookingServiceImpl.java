@@ -8,7 +8,10 @@ import ru.practicum.shareit.booking.dto.BookingMapper;
 import ru.practicum.shareit.booking.dto.NewBookingDto;
 import ru.practicum.shareit.booking.strategies.by.owner.StrategyByOwnerFactory;
 import ru.practicum.shareit.booking.strategies.by.state.StrategyByStateFactory;
-import ru.practicum.shareit.exceptions.exceptions.*;
+import ru.practicum.shareit.exceptions.exceptions.BookingNotFound;
+import ru.practicum.shareit.exceptions.exceptions.ItemNotFound;
+import ru.practicum.shareit.exceptions.exceptions.UserNotFound;
+import ru.practicum.shareit.exceptions.exceptions.WrongParameter;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.user.User;
@@ -16,7 +19,6 @@ import ru.practicum.shareit.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Optional;
 
 @Service
 @Slf4j
