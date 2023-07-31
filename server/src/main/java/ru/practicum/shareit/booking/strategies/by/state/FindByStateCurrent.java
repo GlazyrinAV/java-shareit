@@ -9,7 +9,6 @@ import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.BookingState;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingMapper;
-import ru.practicum.shareit.utils.PageCheck;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -23,9 +22,6 @@ public class FindByStateCurrent implements StrategyByState {
 
     @Override
     public Collection<BookingDto> findByBookingState(int userId, Integer from, Integer size) {
-        if (PageCheck.isWithoutPage(from, size)) {
-            return bookingMapper.toDto(bookingRepository.findTop100ByBooker_IdAndStartBeforeAndEndAfterOrderByStartDesc(userId, LocalDateTime.now(), LocalDateTime.now()));
-        }
         Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size, Sort.by("start").descending());
         return bookingMapper.toDto(bookingRepository.findByBooker_IdAndStartBeforeAndEndAfter(userId, LocalDateTime.now(), LocalDateTime.now(), page).getContent());
     }

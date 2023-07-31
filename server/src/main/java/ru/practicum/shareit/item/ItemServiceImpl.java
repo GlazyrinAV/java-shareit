@@ -15,7 +15,6 @@ import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.request.ItemRequestRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
-import ru.practicum.shareit.utils.PageCheck;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -102,9 +101,6 @@ public class ItemServiceImpl implements ItemService {
         if (text == null || text.isBlank()) {
             return new ArrayList<>();
         }
-        if (PageCheck.isWithoutPage(from, size)) {
-            return itemMapper.toDto(itemRepository.findByName(text));
-        }
         Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size);
         return itemMapper.toDto(itemRepository.findByName(text, page).getContent());
     }
@@ -148,7 +144,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private boolean isAvailableForComments(int userId, int itemId) {
-        return !bookingRepository.exists(userId, itemId, LocalDateTime.now()).isEmpty();
+        return bookingRepository.existsBookingByBooker_IdAndItem_IdAndEndBefore(userId, itemId, LocalDateTime.now());
     }
 
 }

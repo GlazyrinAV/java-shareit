@@ -11,7 +11,6 @@ import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestMapper;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
-import ru.practicum.shareit.utils.PageCheck;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,9 +44,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Override
     public Collection<ItemRequestDto> findOthersRequests(int userId, Integer from, Integer size) {
         userRepository.findById(userId).orElseThrow(() -> new UserNotFound(userId));
-        if (PageCheck.isWithoutPage(from, size)) {
-            return itemRequestMapper.toDto(repository.findOthersRequests(userId));
-        }
         Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size, Sort.by("created").descending());
         Collection<ItemRequest> requests = repository.findOthersRequests(userId, page).getContent();
         if (requests.isEmpty()) {

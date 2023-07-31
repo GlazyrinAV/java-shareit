@@ -9,7 +9,6 @@ import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.BookingState;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingMapper;
-import ru.practicum.shareit.utils.PageCheck;
 
 import java.util.Collection;
 
@@ -22,9 +21,6 @@ public class FindByOwnerAll implements StrategyByOwner {
 
     @Override
     public Collection<BookingDto> findByBookingState(int userId, Integer from, Integer size) {
-        if (PageCheck.isWithoutPage(from, size)) {
-            return bookingMapper.toDto(bookingRepository.findByItem_Owner_IdOrderByStartDesc(userId));
-        }
         Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size, Sort.by("start").descending());
         return bookingMapper.toDto(bookingRepository.findByItem_Owner_Id(userId, page).getContent());
     }

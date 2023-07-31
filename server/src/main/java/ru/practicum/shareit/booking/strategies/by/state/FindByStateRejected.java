@@ -10,7 +10,6 @@ import ru.practicum.shareit.booking.BookingState;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingMapper;
-import ru.practicum.shareit.utils.PageCheck;
 
 import java.util.Collection;
 
@@ -23,9 +22,6 @@ public class FindByStateRejected implements StrategyByState {
 
     @Override
     public Collection<BookingDto> findByBookingState(int userId, Integer from, Integer size) {
-        if (PageCheck.isWithoutPage(from, size)) {
-            return bookingMapper.toDto(bookingRepository.findTop100ByBooker_IdAndStatusEqualsOrderByStartDesc(userId, BookingStatus.REJECTED));
-        }
         Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size, Sort.by("start").descending());
         return bookingMapper.toDto(bookingRepository.findByBooker_IdAndStatusEquals(userId, BookingStatus.REJECTED, page).getContent());
     }

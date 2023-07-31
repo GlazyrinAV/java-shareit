@@ -15,6 +15,4 @@ public interface ItemRequestRepository extends JpaRepository<ItemRequest, Intege
     @Query("FROM ItemRequest IR WHERE IR.owner.id NOT IN :userId ")
     Page<ItemRequest> findOthersRequests(int userId, Pageable pageable);
 
-    @Query("FROM ItemRequest IR WHERE IR.owner.id NOT IN :userId ORDER BY IR.created DESC")
-    Collection<ItemRequest> findOthersRequests(int userId);
 }
