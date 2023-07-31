@@ -22,7 +22,7 @@ public class FindByStateCurrent implements StrategyByState {
 
     @Override
     public Collection<BookingDto> findByBookingState(int userId, Integer from, Integer size) {
-        Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size, Sort.by("start").descending());
+        Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size, Sort.by("start").ascending());
         return bookingMapper.toDto(bookingRepository.findByBooker_IdAndStartBeforeAndEndAfter(userId, LocalDateTime.now(), LocalDateTime.now(), page).getContent());
     }
 

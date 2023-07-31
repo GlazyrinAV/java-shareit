@@ -12,7 +12,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     @Query("from Item it where it.owner.id in :ownerId ORDER BY it.id ASC ")
     Collection<Item> findAllWhereOwnerIdIn(Integer ownerId);
 
-    @Query("from Item it where it.owner.id in :ownerId ORDER BY it.id ASC ")
+    @Query("from Item it where it.owner.id in :ownerId ")
     Page<Item> findAllWhereOwnerIdIn(Integer ownerId, Pageable pageable);
 
     @Query("from Item it where it.available = TRUE and " +

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingRepository;
@@ -56,7 +57,7 @@ public class ItemServiceImpl implements ItemService {
             if (from < 0 || size < 1) {
                 throw new WrongParameter("Указаны неправильные параметры.");
             }
-            Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size);
+            Pageable page = PageRequest.of(from == 0 ? 0 : from / size, size, Sort.by("id").ascending());
             items = itemMapper.toDtoWithTime(itemRepository.findAllWhereOwnerIdIn(ownerId, page).getContent());
         }
         for (ItemDtoWithTime item : items) {
