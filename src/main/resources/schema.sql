@@ -18,14 +18,13 @@ create table if not exists PUBLIC."ITEM"
     DESCRIPTION CHARACTER VARYING not null,
     AVAILABLE   BOOLEAN           not null,
     OWNER_ID    INTEGER           not null,
-    REQUEST_ID  INTEGER,
     constraint "ITEMS_PK"
         primary key (ID),
     constraint ITEMS_USERS_ID_FK
         foreign key (OWNER_ID) references PUBLIC.USERS
 );
 
-drop table if exists PUBLIC."BOOKING";
+drop table if exists PUBLIC.BOOKING;
 
 create table if not exists PUBLIC."BOOKING"
 (
@@ -43,7 +42,7 @@ create table if not exists PUBLIC."BOOKING"
         foreign key (ITEM_ID) references PUBLIC.ITEM
 );
 
-Drop table if exists PUBLIC."COMMENTS";
+Drop table if exists PUBLIC.COMMENTS;
 
 create table if not exists PUBLIC."COMMENTS"
 (
@@ -58,16 +57,4 @@ create table if not exists PUBLIC."COMMENTS"
         foreign key (AUTHOR_ID) references PUBLIC.USERS,
     constraint COMMENTS_ITEM_ID_FK
         foreign key (ITEM_ID) references PUBLIC.ITEM
-);
-
-DROP TABLE IF EXISTS PUBLIC."REQUEST";
-
-create table IF NOT EXISTS PUBLIC."REQUEST"
-(
-    ID          INTEGER generated always as identity,
-    OWNER_ID    INTEGER           not null,
-    DESCRIPTION CHARACTER VARYING not null,
-    CREATED     TIMESTAMP         not null,
-    constraint "REQUEST_PK"
-        primary key (ID)
 );

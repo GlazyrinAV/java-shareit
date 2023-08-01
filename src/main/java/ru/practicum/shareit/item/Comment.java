@@ -1,6 +1,9 @@
 package ru.practicum.shareit.item;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
@@ -12,8 +15,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "COMMENTS", schema = "public")
-@ToString(exclude = {"item", "author"})
-@EqualsAndHashCode(exclude = {"item", "author", "text", "created"})
 public class Comment {
 
     @Id

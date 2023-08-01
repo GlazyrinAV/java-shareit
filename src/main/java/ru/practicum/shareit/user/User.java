@@ -1,6 +1,9 @@
 package ru.practicum.shareit.user;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
@@ -9,8 +12,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "USERS", schema = "PUBLIC")
-@EqualsAndHashCode(of = {"id"})
+@Table(name = "USERS", schema = "public")
 public class User {
 
     @Id

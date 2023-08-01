@@ -81,7 +81,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Collection<BookingDto> findByState(String state, int userId, Integer from, Integer size) {
+    public Collection<BookingDto> findByState(String state, int userId) {
         userRepository.findById(userId).orElseThrow(() -> new UserNotFound(userId));
         BookingState bookingState;
         try {
@@ -89,11 +89,11 @@ public class BookingServiceImpl implements BookingService {
         } catch (IllegalArgumentException exception) {
             throw new WrongEnumParameter("Unknown state: " + state);
         }
-        return strategyByStateFactory.findStrategy(bookingState).findByBookingState(userId, from, size);
+        return strategyByStateFactory.findStrategy(bookingState).findByBookingState(userId);
     }
 
     @Override
-    public Collection<BookingDto> findByOwner(String state, int userId, Integer from, Integer size) {
+    public Collection<BookingDto> findByOwner(String state, int userId) {
         userRepository.findById(userId).orElseThrow(() -> new UserNotFound(userId));
         BookingState bookingState;
         try {
@@ -101,7 +101,7 @@ public class BookingServiceImpl implements BookingService {
         } catch (IllegalArgumentException exception) {
             throw new WrongEnumParameter("Unknown state: " + state);
         }
-        return strategyByOwnerFactory.findStrategy(bookingState).findByBookingState(userId, from, size);
+        return strategyByOwnerFactory.findStrategy(bookingState).findByBookingState(userId);
     }
 
     private void checkBookingTime(NewBookingDto dto) {

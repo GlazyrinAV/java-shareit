@@ -42,19 +42,15 @@ public class BookingController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Collection<BookingDto> findByState(@RequestParam(required = false, defaultValue = "ALL") String state,
-                                              @RequestHeader(Constants.OWNER_HEADER) int userId,
-                                              @RequestParam(required = false) Integer from,
-                                              @RequestParam(required = false) Integer size) {
-        return bookingService.findByState(state, userId, from, size);
+                                              @RequestHeader(Constants.OWNER_HEADER) int userId) {
+        return bookingService.findByState(state, userId);
     }
 
     @GetMapping("/owner")
     @ResponseStatus(HttpStatus.OK)
     public Collection<BookingDto> findByOwner(@RequestParam(required = false, defaultValue = "ALL") String state,
-                                              @RequestHeader(Constants.OWNER_HEADER) int userId,
-                                              @RequestParam(required = false) Integer from,
-                                              @RequestParam(required = false) Integer size)  {
-        return bookingService.findByOwner(state, userId, from, size);
+                                              @RequestHeader(Constants.OWNER_HEADER) int userId)  {
+        return bookingService.findByOwner(state, userId);
     }
 
 }

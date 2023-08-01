@@ -35,6 +35,4 @@ public class ItemDtoWithTime {
 
     private Collection<CommentDto> comments;
 
-    private Integer requestId;
-
 }

@@ -13,8 +13,8 @@ public interface BookingService {
 
     BookingDto findById(int bookingId, int ownerId);
 
-    Collection<BookingDto> findByState(String state, int userId, Integer from, Integer size);
+    Collection<BookingDto> findByState(String state, int userId);
 
-    Collection<BookingDto> findByOwner(String state, int userId, Integer from, Integer size);
+    Collection<BookingDto> findByOwner(String state, int userId);
 
 }

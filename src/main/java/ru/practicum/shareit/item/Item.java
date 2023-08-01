@@ -1,40 +1,42 @@
 package ru.practicum.shareit.item;
 
-import lombok.*;
-import ru.practicum.shareit.request.ItemRequest;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "ITEM", schema = "PUBLIC")
-@EqualsAndHashCode(of = {"id"})
+@Table(name = "ITEM", schema = "public")
 public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private int id;
 
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "AVAILABLE")
+    @Column(name = "available")
     private Boolean available;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OWNER_ID")
+    @JoinColumn(name = "owner_id")
     private User owner;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "REQUEST_ID")
-    private ItemRequest itemRequest;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ITEM_ID")
+    private Collection<Comment> comments;
 
 }

@@ -29,10 +29,8 @@ public class ItemController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemDtoWithTime> findAllByUserID(@RequestHeader(Constants.OWNER_HEADER) int ownerId,
-                                                       @RequestParam(required = false) Integer from,
-                                                       @RequestParam(required = false) Integer size) {
-        return itemService.findAllByUserId(ownerId, from, size);
+    public Collection<ItemDtoWithTime> findAllByUserID(@RequestHeader(Constants.OWNER_HEADER) int ownerId) {
+        return itemService.findAllByUserId(ownerId);
     }
 
     @GetMapping("/{id}")
@@ -44,10 +42,8 @@ public class ItemController {
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemDto> findByName(@RequestParam String text,
-                                          @RequestParam(required = false) Integer from,
-                                          @RequestParam(required = false) Integer size) {
-        return itemService.findByName(text, from, size);
+    public Collection<ItemDto> findByName(@RequestParam String text) {
+        return itemService.findByName(text);
     }
 
     @DeleteMapping("/{id}")
