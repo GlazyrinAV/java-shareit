@@ -19,7 +19,7 @@ Java, SpringBoot, Maven, JUnit, RESTful API, Postgresql, Doker, Shell, MockMVC.
 Необходимо настроенная система виртуализации, установленный Docker Desktop(скачать и установить можно с официального сайта https://www.docker.com/products/docker-desktop/)
 
 - Клонируйте репозиторий проекта на свою локальную машину:  
-  ```git clone git@github.com:danyyyaa/java-shareit.git```
+  ```git clone git@github.com:GlazyrinAV/java-shareit.git```
 
 - Запустите командную строку и перейдите в корень директории с проектом.
 
